@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --primary-hover: #4338ca;
+  --primary-subtle: #eef2ff;
+  
+  --secondary: #2563eb;
+  --secondary-foreground: #ffffff;
+  --secondary-subtle: #eff6ff;
+  
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  
+  --accent: #f8fafc;
+  --accent-foreground: #0f172a;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: #fef2f2;
+  
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --success-subtle: #ecfdf5;
+  
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --warning-subtle: #fffbeb;
+  
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #6366f1;
+  
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #080c14;
+  --foreground: #f8fafc;
+  
+  --card: #0e1422;
+  --card-foreground: #f8fafc;
+  
+  --popover: #0e1422;
+  --popover-foreground: #f8fafc;
+  
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --primary-hover: #4f46e5;
+  --primary-subtle: #1e1b4b;
+  
+  --secondary: #3b82f6;
+  --secondary-foreground: #ffffff;
+  --secondary-subtle: #172554;
+  
+  --muted: #131b2e;
+  --muted-foreground: #94a3b8;
+  
+  --accent: #131b2e;
+  --accent-foreground: #f8fafc;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: #450a0a;
+  
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --success-subtle: #064e3b;
+  
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --warning-subtle: #451a03;
+  
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #6366f1;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Question Palette Status Badges */
+.palette-not-visited {
+  background-color: var(--muted);
+  border-color: var(--border);
+  color: var(--muted-foreground);
+}
+
+.palette-skipped {
+  background-color: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #d97706;
+}
+
+.dark .palette-skipped {
+  color: #fbbf24;
+}
+
+.palette-answered {
+  background-color: #10b981;
+  border-color: #059669;
+  color: #ffffff;
+}
+
+.palette-marked {
+  background-color: rgba(99, 102, 241, 0.15);
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.palette-answered-marked {
+  background-color: #6366f1;
+  border-color: #10b981;
+  color: #ffffff;
+  position: relative;
+}
+
+.palette-answered-marked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #10b981;
+}
+
+/* Shimmer animation for loading skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(148, 163, 184, 0.08) 25%, rgba(148, 163, 184, 0.18) 50%, rgba(148, 163, 184, 0.08) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
