@@ -1,0 +1,6 @@
+{
+  "name": "AptiVerse",
+  "description": "Intelligent competitive exam preparation platform for CAT, XAT, SNAP, NMAT, CMAT, MAT, and MAH MBA CET.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

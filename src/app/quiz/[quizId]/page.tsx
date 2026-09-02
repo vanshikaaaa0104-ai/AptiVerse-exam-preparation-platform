@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { SAMPLE_VERIFIED_QUESTIONS, type VerifiedQuestionItem } from "@/lib/seed-data";
 import { formatTimeRemaining } from "@/lib/utils";
 
