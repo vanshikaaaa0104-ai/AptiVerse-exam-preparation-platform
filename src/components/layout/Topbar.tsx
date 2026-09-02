@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -14,9 +14,11 @@ import {
   BookOpen,
   FileCheck2,
   Trophy,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { getStoredCurrentUser, UserProfile } from "@/lib/auth-storage";
 
 interface TopbarProps {
   onMobileMenuToggle?: () => void;
@@ -26,6 +28,42 @@ interface TopbarProps {
 export function Topbar({ onMobileMenuToggle, isMobileMenuOpen }: TopbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    setCurrentUser(getStoredCurrentUser());
+
+    const handleAuthChange = (e: Event) => {
+      const customEvent = e as CustomEvent<UserProfile | null>;
+      if (customEvent.detail) {
+        setCurrentUser(customEvent.detail);
+      } else {
+        setCurrentUser(getStoredCurrentUser());
+      }
+    };
+
+    window.addEventListener("aptiverse_auth_changed", handleAuthChange);
+    return () => {
+      window.removeEventListener("aptiverse_auth_changed", handleAuthChange);
+    };
+  }, []);
+
+  const streak = currentUser?.currentStreak ?? 1;
+  const xp = currentUser?.totalXp ?? 100;
+  const questionsDone = currentUser?.questionsAttempted ? Math.min(currentUser.questionsAttempted, currentUser?.dailyQuestionGoal || 20) : 0;
+  const questionGoal = currentUser?.dailyQuestionGoal || 20;
+  const goalPercent = Math.round((questionsDone / questionGoal) * 100);
+  const targetExamSlug = currentUser?.targetExam || "cat";
+  const targetExamName = currentUser?.targetExamName || "CAT 2026";
+
+  const userInitials = currentUser?.name
+    ? currentUser.name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "ST";
 
   const searchResults = [
     { title: "Time, Speed & Distance - Relative Speed", type: "Concept", href: "/learn/quant/time-speed-distance" },
@@ -72,38 +110,38 @@ export function Topbar({ onMobileMenuToggle, isMobileMenuOpen }: TopbarProps) {
           <Link
             href="/achievements"
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 transition-colors"
-            title="12 Day Continuous Streak"
+            title={`${streak} Day Continuous Streak`}
           >
             <Flame className="h-4 w-4 text-amber-400 fill-amber-400 animate-pulse" />
-            <span className="text-xs font-bold font-mono">12d</span>
+            <span className="text-xs font-bold font-mono">{streak}d</span>
           </Link>
 
           {/* Daily Goal Progress Chip */}
           <Link
             href="/dashboard"
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 transition-colors"
-            title="Today's Goal: 16 of 25 Questions Completed"
+            title={`Today's Goal: ${questionsDone} of ${questionGoal} Questions Completed`}
           >
             <Target className="h-3.5 w-3.5 text-emerald-400" />
             <div className="flex items-center gap-1 text-xs font-semibold">
-              <span>16/25 Qs</span>
-              <span className="text-[10px] text-emerald-500/70 font-mono">(64%)</span>
+              <span>{questionsDone}/{questionGoal} Qs</span>
+              <span className="text-[10px] text-emerald-500/70 font-mono">({goalPercent}%)</span>
             </div>
           </Link>
 
           {/* XP & Level Chip */}
           <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300">
             <Zap className="h-3.5 w-3.5 text-indigo-400 fill-indigo-400" />
-            <span className="text-xs font-bold">2,450 XP</span>
+            <span className="text-xs font-bold font-mono">{xp.toLocaleString()} XP</span>
           </div>
 
           {/* Target Exam Pill */}
           <Link
-            href="/exams/cat"
+            href={`/exams/${targetExamSlug}`}
             className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 text-xs font-semibold text-slate-200 hover:border-indigo-500/50 hover:text-white transition-colors"
           >
             <span className="h-2 w-2 rounded-full bg-indigo-500"></span>
-            <span>CAT 2026</span>
+            <span>{targetExamName}</span>
           </Link>
 
           {/* Notifications Trigger */}
@@ -114,6 +152,20 @@ export function Topbar({ onMobileMenuToggle, isMobileMenuOpen }: TopbarProps) {
             <Bell className="h-4 w-4" />
             <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-indigo-500 ring-2 ring-[#080c14]"></span>
           </button>
+
+          {/* User Profile Quick Link */}
+          <Link
+            href="/profile"
+            className="flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors group"
+            title={`Signed in as ${currentUser?.name || 'Student'}`}
+          >
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-xs">
+              {userInitials}
+            </div>
+            <span className="hidden xl:inline text-xs font-semibold text-slate-200 group-hover:text-white max-w-[90px] truncate">
+              {currentUser?.name?.split(" ")[0] || "Profile"}
+            </span>
+          </Link>
         </div>
       </header>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -20,9 +20,13 @@ import {
   Sparkles,
   Flame,
   Zap,
+  Layers,
+  LogOut,
+  UserPlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { getStoredCurrentUser, UserProfile } from "@/lib/auth-storage";
 
 interface NavItem {
   label: string;
@@ -33,23 +37,74 @@ interface NavItem {
   children?: { label: string; href: string }[];
 }
 
-export function Sidebar({ userRole = "STUDENT" }: { userRole?: string }) {
+export function Sidebar({ userRole }: { userRole?: string }) {
   const pathname = usePathname();
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     learn: true,
     practice: true,
     mocks: true,
   });
 
+  useEffect(() => {
+    setCurrentUser(getStoredCurrentUser());
+
+    const handleAuthChange = (e: Event) => {
+      const customEvent = e as CustomEvent<UserProfile | null>;
+      if (customEvent.detail) {
+        setCurrentUser(customEvent.detail);
+      } else {
+        setCurrentUser(getStoredCurrentUser());
+      }
+    };
+
+    window.addEventListener("aptiverse_auth_changed", handleAuthChange);
+    return () => {
+      window.removeEventListener("aptiverse_auth_changed", handleAuthChange);
+    };
+  }, []);
+
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
+  const isAdmin = (userRole || currentUser?.role) === "ADMIN";
+
+  const userInitials = currentUser?.name
+    ? currentUser.name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "ST";
 
   const navItems: NavItem[] = [
     {
       label: "Dashboard",
       href: "/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      label: "Study Plan",
+      href: "/study-plan",
+      icon: Target,
+      badge: "NEW",
+      badgeVariant: "indigo",
+    },
+    {
+      label: "Exams & Syllabus",
+      href: "/exams",
+      icon: Layers,
+      children: [
+        { label: "CAT 2026", href: "/exams/cat" },
+        { label: "XAT 2026", href: "/exams/xat" },
+        { label: "NMAT 2026", href: "/exams/nmat" },
+        { label: "MAH MBA CET", href: "/exams/mah-cet" },
+        { label: "SNAP 2026", href: "/exams/snap" },
+        { label: "CMAT 2026", href: "/exams/cmat" },
+        { label: "MAT 2026", href: "/exams/mat" },
+      ],
     },
     {
       label: "Learn Concepts",
@@ -144,8 +199,6 @@ export function Sidebar({ userRole = "STUDENT" }: { userRole?: string }) {
     },
   ];
 
-  const isAdmin = ["ADMIN", "SUPERADMIN", "REVIEWER"].includes(userRole);
-
   return (
     <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-slate-800/80 bg-[#0b0f19] h-screen sticky top-0 z-40 select-none">
       {/* Brand Header */}
@@ -160,7 +213,7 @@ export function Sidebar({ userRole = "STUDENT" }: { userRole?: string }) {
                 AptiVerse
               </span>
               <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-                PRO
+                V2.0
               </span>
             </div>
             <p className="text-[11px] text-slate-400 font-medium tracking-tight">
@@ -324,26 +377,41 @@ export function Sidebar({ userRole = "STUDENT" }: { userRole?: string }) {
       </div>
 
       {/* User Quick Info & Profile footer */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-950/40">
+      <div className="p-3 border-t border-slate-800/80 bg-slate-950/40 space-y-2">
         <div className="flex items-center justify-between p-2 rounded-xl bg-slate-900/80 border border-slate-800">
-          <Link href="/profile" className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-xs text-white shrink-0">
-              AS
+          <Link href="/profile" className="flex items-center gap-2.5 flex-1 min-w-0 group">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-xs text-white shadow-xs shrink-0">
+              {userInitials}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-white truncate">
-                Aman Sharma
+              <p className="text-xs font-semibold text-white truncate group-hover:text-indigo-400 transition-colors">
+                {currentUser?.name || "Student Aspirant"}
               </p>
-              <p className="text-[10px] text-slate-400 truncate">
-                Level 4 • 2,450 XP
+              <p className="text-[10px] text-slate-400 truncate font-mono">
+                Level {currentUser?.level || 1} • {currentUser?.totalXp || 100} XP
               </p>
             </div>
           </Link>
           <Link
             href="/settings"
+            title="Account Settings"
             className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
           >
             <Settings className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="flex items-center justify-between px-1 text-[11px] text-slate-400">
+          <span className="font-mono text-[10px] text-indigo-400/90 font-semibold">
+            {currentUser?.targetExamName || "CAT 2026"}
+          </span>
+          <Link
+            href="/login"
+            className="text-[11px] text-slate-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
+            title="Switch or Sign in with another account"
+          >
+            <LogOut className="h-3 w-3" />
+            <span>Switch User</span>
           </Link>
         </div>
       </div>

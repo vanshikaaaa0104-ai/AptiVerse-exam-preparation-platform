@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Flame,
@@ -18,6 +18,8 @@ import {
   BarChart2,
   Layers,
   Award,
+  Calendar,
+  Compass,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -35,6 +37,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { getStoredCurrentUser, UserProfile } from "@/lib/auth-storage";
 
 const accuracyTrendData = [
   { day: "Mon", accuracy: 62, target: 75, questions: 22 },
@@ -55,7 +58,27 @@ const speedBenchmarkData = [
 ];
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState<"overview" | "sections">("overview");
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    setUser(getStoredCurrentUser());
+  }, []);
+
+  // Compute countdown to target exam
+  const calculateDaysLeft = (targetDateStr?: string) => {
+    if (!targetDateStr) return 88;
+    const target = new Date(targetDateStr).getTime();
+    const now = new Date().getTime();
+    const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 88;
+  };
+
+  const daysLeft = calculateDaysLeft(user?.targetDate);
+  const examName = user?.targetExamName || (user?.targetExam ? user.targetExam.toUpperCase() + " 2026" : "CAT 2026");
+  const studentFirstName = user?.name ? user.name.split(" ")[0] : "Student";
+  const dailyGoal = user?.dailyQuestionGoal || 25;
+  const completedToday = Math.min(16, dailyGoal);
+  const completionPercent = Math.round((completedToday / dailyGoal) * 100);
 
   return (
     <AppShell>
@@ -65,14 +88,15 @@ export default function DashboardPage() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Good morning, Aman 👋
+                Good morning, {studentFirstName} 👋
               </h1>
               <Badge variant="verified" className="text-[10px]">
-                CAT 2026 Aspirant
+                {examName} Aspirant
               </Badge>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Ready for today&apos;s challenge? You are on a <span className="text-amber-400 font-semibold">12-day streak</span>. Complete 9 more questions to hit your daily goal.
+              {daysLeft} days remaining for {examName}. You are on a{" "}
+              <span className="text-amber-400 font-semibold">{user?.currentStreak || 12}-day streak 🔥</span>.
             </p>
           </div>
 
@@ -83,10 +107,10 @@ export default function DashboardPage() {
                 <span>Solve Daily Challenge</span>
               </Button>
             </Link>
-            <Link href="/mocks/cat-2026-national-full-mock-01/instructions">
+            <Link href={`/exams/${user?.targetExam || "cat"}`}>
               <Button variant="secondary" size="sm" className="gap-2">
-                <Sparkles className="h-4 w-4 text-indigo-400" />
-                <span>Launch Full Mock #01</span>
+                <Compass className="h-4 w-4 text-indigo-400" />
+                <span>Explore {examName} Syllabus</span>
               </Button>
             </Link>
           </div>
@@ -105,7 +129,7 @@ export default function DashboardPage() {
                   <CardTitle className="text-base font-semibold">Today&apos;s Goal</CardTitle>
                 </div>
                 <Badge variant="indigo" className="text-[11px] font-mono font-bold">
-                  16 / 25 Qs
+                  {completedToday} / {dailyGoal} Qs
                 </Badge>
               </div>
               <CardDescription className="text-xs text-slate-400 pt-1">
@@ -117,9 +141,9 @@ export default function DashboardPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-semibold">
                   <span className="text-slate-300">Daily Target Completion</span>
-                  <span className="text-indigo-400 font-mono">64%</span>
+                  <span className="text-indigo-400 font-mono">{completionPercent}%</span>
                 </div>
-                <Progress value={64} className="h-2.5" />
+                <Progress value={completionPercent} className="h-2.5" />
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-xs font-medium">
@@ -127,14 +151,14 @@ export default function DashboardPage() {
                   <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
                   <div>
                     <p className="text-[10px] text-slate-400">Streak</p>
-                    <p className="text-xs font-bold text-white">12 Days</p>
+                    <p className="text-xs font-bold text-white">{user?.currentStreak || 12} Days</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/60 border border-slate-800">
                   <Zap className="h-4 w-4 text-indigo-400 fill-indigo-400" />
                   <div>
                     <p className="text-[10px] text-slate-400">XP Today</p>
-                    <p className="text-xs font-bold text-white">+180 XP</p>
+                    <p className="text-xs font-bold text-white">+{user?.totalXp || 2450} XP</p>
                   </div>
                 </div>
               </div>
@@ -154,11 +178,11 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-semibold">CAT 2026 Readiness</CardTitle>
-                    <Badge variant="verified" className="text-[10px]">VERIFIED</Badge>
+                    <CardTitle className="text-base font-semibold">{examName} Readiness</CardTitle>
+                    <Badge variant="verified" className="text-[10px]">99th Percentile Goal</Badge>
                   </div>
                   <CardDescription className="text-xs text-slate-400 pt-0.5">
-                    Sectional mastery benchmarked against 99th percentile cutoff criteria.
+                    Sectional mastery benchmarked against target cutoff criteria.
                   </CardDescription>
                 </div>
                 <div className="text-right">
@@ -169,37 +193,34 @@ export default function DashboardPage() {
             </CardHeader>
 
             <CardContent className="space-y-3.5">
-              {/* Section 1: QA */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Quantitative Aptitude (QA)</span>
+                  <span className="font-semibold text-slate-200">Quantitative Aptitude</span>
                   <span className="text-emerald-400 font-bold font-mono">72% Mastery</span>
                 </div>
                 <Progress value={72} indicatorClassName="bg-emerald-500" className="h-2" />
               </div>
 
-              {/* Section 2: DILR */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Data Interpretation & LR (DILR)</span>
+                  <span className="font-semibold text-slate-200">Logical Reasoning &amp; DI</span>
                   <span className="text-amber-400 font-bold font-mono">61% Mastery</span>
                 </div>
                 <Progress value={61} indicatorClassName="bg-amber-500" className="h-2" />
               </div>
 
-              {/* Section 3: VARC */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Verbal Ability & RC (VARC)</span>
+                  <span className="font-semibold text-slate-200">Verbal Ability &amp; RC</span>
                   <span className="text-indigo-400 font-bold font-mono">74% Mastery</span>
                 </div>
                 <Progress value={74} indicatorClassName="bg-indigo-500" className="h-2" />
               </div>
 
               <div className="pt-2 flex items-center justify-between text-xs text-slate-400">
-                <span>Target Mock Score: <strong className="text-white">92 / 198</strong></span>
-                <Link href="/analytics/sections" className="text-indigo-400 hover:underline font-medium">
-                  View Detailed Breakdown →
+                <span>Questions Solved: <strong className="text-white">{user?.questionsAttempted || 348}</strong></span>
+                <Link href="/analytics" className="text-indigo-400 hover:underline font-medium">
+                  Detailed Analytics →
                 </Link>
               </div>
             </CardContent>
@@ -209,32 +230,34 @@ export default function DashboardPage() {
           <Card className="lg:col-span-3 border border-slate-800 bg-[#0e1422] flex flex-col justify-between">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <Badge variant="secondary" className="text-[10px]">IN PROGRESS</Badge>
-                <span className="text-[11px] font-mono text-slate-400">Topic 4 of 12</span>
+                <Badge variant="secondary" className="text-[10px]">CONTINUE LEARNING</Badge>
+                <span className="text-[11px] font-mono text-slate-400">In Progress</span>
               </div>
-              <CardTitle className="text-base font-semibold pt-1">Percentages</CardTitle>
+              <CardTitle className="text-base font-semibold pt-1">
+                {user?.lastTopic?.title || "Time & Work – Pipes & Cisterns"}
+              </CardTitle>
               <CardDescription className="text-xs text-slate-400">
-                Arithmetic • Successive changes & faulty balances
+                {user?.lastTopic?.section || "Quantitative Aptitude"}
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-300">Modules Completed</span>
-                  <span className="font-mono font-bold text-white">7 / 15</span>
+                  <span className="text-slate-300">Module Progress</span>
+                  <span className="font-mono font-bold text-white">{user?.lastTopic?.progress || 60}%</span>
                 </div>
-                <Progress value={(7 / 15) * 100} className="h-2" />
+                <Progress value={user?.lastTopic?.progress || 60} className="h-2" />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2">
                 <BookOpen className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
-                <span className="line-clamp-2">Next: Successive Discount Multipliers & Mental Hacks</span>
+                <span className="line-clamp-2">Next: Alternating work cycles & negative efficiency traps</span>
               </div>
 
-              <Link href="/learn/quant/percentages" className="block">
+              <Link href={user?.lastTopic?.href || "/quiz/time-work"} className="block">
                 <Button variant="secondary" size="sm" className="w-full justify-center gap-1.5">
-                  <span>Resume Module</span>
+                  <span>Resume Learning</span>
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -254,7 +277,7 @@ export default function DashboardPage() {
                   </div>
                   <div>
                     <CardTitle className="text-base font-semibold text-white">
-                      Recommended Next Action
+                      Recommended for You
                     </CardTitle>
                     <p className="text-[11px] text-amber-400/90 font-medium">
                       Automated Pedagogical Remediation
@@ -269,7 +292,7 @@ export default function DashboardPage() {
 
             <CardContent className="space-y-4">
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                You are currently struggling with <strong className="text-white">Time & Work (48% Accuracy)</strong> and your average solving time is <strong className="text-amber-400 font-mono">2m 15s</strong> (benchmark: 1m 45s).
+                You are currently struggling with <strong className="text-white">Time &amp; Work (48% Accuracy)</strong> and your average solving time is <strong className="text-amber-400 font-mono">2m 15s</strong> (benchmark: 1m 45s).
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -278,7 +301,7 @@ export default function DashboardPage() {
                     Step 1: Revise Theory
                   </p>
                   <p className="text-xs text-white font-medium">
-                    LCM Units & Alternating Days Protocol
+                    LCM Units &amp; Alternating Days Protocol
                   </p>
                   <p className="text-[10px] text-slate-400">Estimated duration: 8 minutes</p>
                 </div>
@@ -301,7 +324,7 @@ export default function DashboardPage() {
                     <span>Revise Concept (8 min)</span>
                   </Button>
                 </Link>
-                <Link href="/practice/weak">
+                <Link href="/quiz/time-work">
                   <Button variant="accent" size="sm" className="gap-2">
                     <Target className="h-4 w-4" />
                     <span>Start 10-Question Drill</span>
@@ -324,21 +347,21 @@ export default function DashboardPage() {
                 </Link>
               </div>
               <CardDescription className="text-xs text-slate-400">
-                Topics with accuracy &lt; 60% across the last 30 attempts.
+                Topics with accuracy &lt; 60% across recent diagnostic sessions.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
                 <div>
-                  <p className="text-xs font-semibold text-white">Time & Work</p>
+                  <p className="text-xs font-semibold text-white">Time &amp; Work</p>
                   <p className="text-[10px] text-slate-400">Quantitative Aptitude • 14 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="destructive" className="text-[10px] font-mono">
                     48% Acc
                   </Badge>
-                  <Link href="/practice/weak">
+                  <Link href="/quiz/time-work">
                     <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -348,14 +371,14 @@ export default function DashboardPage() {
 
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
                 <div>
-                  <p className="text-xs font-semibold text-white">Linear & Circular Arrangements</p>
+                  <p className="text-xs font-semibold text-white">Linear &amp; Circular Arrangements</p>
                   <p className="text-[10px] text-slate-400">Logical Reasoning • 18 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="warning" className="text-[10px] font-mono">
                     53% Acc
                   </Badge>
-                  <Link href="/practice/weak">
+                  <Link href="/quiz/linear-arrangements">
                     <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -365,14 +388,14 @@ export default function DashboardPage() {
 
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
                 <div>
-                  <p className="text-xs font-semibold text-white">Para Jumbles & Coherence</p>
+                  <p className="text-xs font-semibold text-white">Para Jumbles &amp; Coherence</p>
                   <p className="text-[10px] text-slate-400">Verbal Ability • 21 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="warning" className="text-[10px] font-mono">
                     57% Acc
                   </Badge>
-                  <Link href="/practice/weak">
+                  <Link href="/quiz/para-jumbles">
                     <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>

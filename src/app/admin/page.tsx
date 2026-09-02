@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   ShieldCheck,
@@ -14,34 +14,66 @@ import {
   Plus,
   Settings,
   CheckCircle2,
+  TrendingUp,
+  BarChart3,
+  Activity,
+  Flame,
+  Award,
+  Clock,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 export default function AdminOverviewPage() {
   const stats = [
-    { label: "Total Question Bank", value: "1,240", change: "+45 this week", icon: Target, color: "text-indigo-400" },
-    { label: "Verification Queue", value: "12 Pending", change: "4 Drafts • 8 In Review", icon: FileCheck2, color: "text-amber-400" },
-    { label: "Active Full Mocks", value: "14 Live", change: "CAT / XAT / SNAP", icon: Sparkles, color: "text-emerald-400" },
-    { label: "Registered Aspirants", value: "3,820", change: "+240 this month", icon: Users, color: "text-blue-400" },
+    { label: "Total Registered Aspirants", value: "4,120", change: "+340 this month", icon: Users, color: "text-blue-400" },
+    { label: "Daily Active Students", value: "1,480", change: "68% daily retention", icon: Activity, color: "text-emerald-400" },
+    { label: "Total Tests Attempted", value: "28,940", change: "+2,180 this week", icon: Target, color: "text-indigo-400" },
+    { label: "Platform Average Score", value: "68.4%", change: "+3.2% cohort growth", icon: TrendingUp, color: "text-amber-400" },
+  ];
+
+  const examPopularity = [
+    { exam: "CAT 2026", attempts: "12,450", share: 43, color: "bg-indigo-500" },
+    { exam: "SNAP 2026", attempts: "5,120", share: 18, color: "bg-purple-500" },
+    { exam: "NMAT 2026", attempts: "4,300", share: 15, color: "bg-emerald-500" },
+    { exam: "XAT 2026", attempts: "3,890", share: 13, color: "bg-amber-500" },
+    { exam: "MAH MBA CET", attempts: "1,820", share: 6, color: "bg-cyan-500" },
+    { exam: "CMAT 2026", attempts: "860", share: 3, color: "bg-rose-500" },
+    { exam: "MAT 2026", attempts: "500", share: 2, color: "bg-slate-500" },
+  ];
+
+  const commonWeakTopics = [
+    { topic: "Time & Work (Alternating cycles)", section: "Quantitative Aptitude", avgAccuracy: "42%", failRate: "58%" },
+    { topic: "Games & Tournaments (Knockout/Round-Robin)", section: "Logical Reasoning", avgAccuracy: "46%", failRate: "54%" },
+    { topic: "Inference & Author's Implicit Bias", section: "VARC", avgAccuracy: "51%", failRate: "49%" },
+    { topic: "Circular Arrangements with Facing In/Out", section: "Logical Reasoning", avgAccuracy: "53%", failRate: "47%" },
+    { topic: "Permutation & Combination (Derangements)", section: "Modern Math", avgAccuracy: "48%", failRate: "52%" },
+  ];
+
+  const hardestQuestions = [
+    { code: "Q-CAT-QA-109", topic: "Work & Efficiency Pipes", difficulty: "Hard", wrongRate: "68%", attempts: 1840 },
+    { code: "Q-XAT-DM-204", topic: "Ethical Whistleblower Dilemma", difficulty: "Hard", wrongRate: "64%", attempts: 1210 },
+    { code: "Q-SNAP-LR-312", topic: "12-Person Dual-Row Arrangement", difficulty: "Hard", wrongRate: "61%", attempts: 1950 },
+    { code: "Q-NMAT-LS-401", topic: "Complex Cloze Passage Idioms", difficulty: "Hard", wrongRate: "59%", attempts: 1420 },
   ];
 
   return (
     <AppShell userRole="ADMIN">
-      <div className="space-y-8 max-w-6xl mx-auto animate-in fade-in duration-200">
+      <div className="space-y-8 max-w-6xl mx-auto animate-in fade-in duration-200 pb-12">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Admin & Content Governance Suite
+                Admin &amp; Academic Governance Suite
               </h1>
-              <Badge variant="warning">ADMIN PRIVILEGES</Badge>
+              <Badge variant="warning">AptiVerse V2.0 Admin</Badge>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Curate canonical question graphs, audit 4-stage verification queues, and configure exam blueprint simulators.
+              Cohorts telemetry, question proofing workflows, syllabus weightages, and 7-exam simulators.
             </p>
           </div>
 
@@ -61,7 +93,7 @@ export default function AdminOverviewPage() {
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {/* 4 KPI Cohort Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s, idx) => (
             <Card key={idx} className="border border-slate-800 bg-[#0e1422] p-5 space-y-2">
@@ -75,7 +107,107 @@ export default function AdminOverviewPage() {
           ))}
         </div>
 
-        {/* Admin Navigation Tiles */}
+        {/* Exam Popularity & Cohort Weak Topics */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          {/* Most Attempted Exams (6 Cols) */}
+          <Card className="lg:col-span-6 border border-slate-800 bg-[#0e1422] p-6 space-y-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold text-white">Most Attempted Examinations</h3>
+                <p className="text-xs text-slate-400">Distribution of mock and sectional tests across 7 target exams</p>
+              </div>
+              <Badge variant="indigo" className="text-[10px]">ALL 7 EXAMS</Badge>
+            </div>
+
+            <div className="space-y-3.5">
+              {examPopularity.map((item, idx) => (
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-semibold text-slate-200">{item.exam}</span>
+                    <span className="text-slate-400 font-mono text-[11px]">
+                      {item.attempts} attempts ({item.share}%)
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${item.color} rounded-full`}
+                      style={{ width: `${item.share}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Common Weak Topics across Cohort (6 Cols) */}
+          <Card className="lg:col-span-6 border border-slate-800 bg-[#0e1422] p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold text-white">Cohort Weak Topic Bottlenecks</h3>
+                <p className="text-xs text-slate-400">High failure rate topics requiring curriculum reinforcement</p>
+              </div>
+              <AlertTriangle className="h-4 w-4 text-amber-400" />
+            </div>
+
+            <div className="space-y-2.5">
+              {commonWeakTopics.map((wt, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center justify-between text-xs"
+                >
+                  <div className="space-y-0.5">
+                    <p className="font-semibold text-white">{wt.topic}</p>
+                    <p className="text-[10px] text-slate-400">{wt.section}</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant="destructive" className="text-[10px] font-mono">
+                      {wt.failRate} Error Rate
+                    </Badge>
+                    <p className="text-[10px] text-slate-400 mt-0.5">Avg: {wt.avgAccuracy}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* Most Difficult Questions in Question Bank */}
+        <Card className="border border-slate-800 bg-[#0e1422] p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Most Challenging Canonical Questions</h3>
+              <p className="text-xs text-slate-400">Questions with lowest completion rates across student diagnostic runs</p>
+            </div>
+            <Link href="/admin/questions">
+              <Button variant="ghost" size="sm" className="text-xs text-indigo-400 hover:text-indigo-300">
+                View Full Bank (1,240) →
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {hardestQuestions.map((q, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2 flex flex-col justify-between"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] text-indigo-400 font-bold">{q.code}</span>
+                    <Badge variant="destructive" className="text-[10px]">{q.difficulty}</Badge>
+                  </div>
+                  <p className="text-xs font-semibold text-white line-clamp-1">{q.topic}</p>
+                </div>
+                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>{q.attempts} Attempts</span>
+                  <span className="text-rose-400 font-bold">{q.wrongRate} Wrong</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Admin Navigation Action Tiles */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <Card className="border border-slate-800 bg-[#0e1422] p-6 space-y-4 flex flex-col justify-between group hover:border-slate-700">
             <div className="space-y-2">
