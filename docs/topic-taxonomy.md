@@ -178,23 +178,41 @@ Canonical Knowledge Graph
 - **Figure Matrix & Embedded Figures**: $3 \times 3$ symbol grids with row/column pattern transformation rules; finding embedded hidden shapes.
 - **Paper Folding, Punching & Visual Sequences**: Unfolding symmetry predictions, transparent sheet overlapping patterns.
 
+### 5.5 GMAT: Data Insights & Reasoning Taxonomy
+*Labeled: Recommended Preparation Taxonomy (Derived from GMAC Published Exam Specifications & Past Trends)*
+- **Data Insights (DI)**:
+  - **Data Sufficiency (DS)**: Pure math and real-world scenarios requiring evaluation of Statement (1) and Statement (2) sufficiency without calculating exact values.
+  - **Multi-Source Reasoning (MSR)**: Tabbed sources (emails, articles, data sheets) testing synthesis, discrepancy detection, and multi-step inference.
+  - **Table Analysis**: Interactive sorting of spreadsheets, calculating medians, proportions, correlations, and checking conditional hypotheses.
+  - **Graphics Interpretation**: Scatter plots, x/y trend lines, bar charts, bubble plots with fill-in-the-blank dropdown inference statements.
+  - **Two-Part Analysis**: Dual-column answer grids requiring simultaneous solution of two related variables, trade-off optimization, or logic puzzles.
+- **Quantitative Reasoning (QR)**:
+  - Exclusively Problem Solving (PS) across Arithmetic and Algebra.
+  - Geometry is strictly excluded per GMAC 2024+ format.
+- **Verbal Reasoning (VR)**:
+  - Critical Reasoning (CR): Assumptions, Weaken/Strengthen, Inference, Method of Reasoning, Flaw in the Argument, Evaluate the Argument.
+  - Reading Comprehension (RC): Main Idea, Supporting Ideas, Inferences, Tone, Style, Logical Structure.
+  - Sentence Correction is strictly excluded per GMAC 2024+ format.
+
 ---
 
 ## 6. Cross-Exam Unified Mapping Matrix
 
-| Subject / Domain Area | CAT | XAT | SNAP | NMAT | CMAT | MAT | MAH CET |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Arithmetic** | High | High | High | High | High | High | High |
-| **Algebra** | High | Medium | Medium | Medium | Medium | Medium | Medium |
-| **Geometry & Mensuration** | High | Medium | Medium | Low | Medium | Medium | Medium |
-| **Number System** | Medium | Medium | Low | Low | Medium | Medium | Low |
-| **Modern Math (P&C / Prob)** | Medium | High | High | High | Medium | Medium | Medium |
-| **Data Interpretation** | High | High | Medium | High | High | High | High |
-| **Analytical & Logical Reasoning**| High | High | High | High | High | High | High |
-| **Reading Comprehension** | High | High | Low | High | Medium | High | High |
-| **Verbal Ability / Grammar** | High (VA) | High (VA) | High (Grammar) | High (Vocab/Grammar) | High (Vocab) | High (Vocab) | High (Grammar) |
-| **Decision Making** | — | **Core** | — | — | — | — | — |
-| **Innovation & Entrepreneurship** | — | — | — | — | **Core** | — | — |
-| **Economic & Business Env.** | — | — | — | — | — | **Core** | — |
-| **Abstract / Visual Reasoning** | — | — | — | — | — | — | **Core** |
-| **General Awareness / GK** | — | Part 2 | — | — | **Core** | — | — |
+| Subject / Domain Area | CAT | XAT | SNAP | NMAT | CMAT | MAT | MAH CET | GMAT |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Arithmetic** | High | High | High | High | High | High | High | **High** |
+| **Algebra** | High | Medium | Medium | Medium | Medium | Medium | Medium | **High** |
+| **Geometry & Mensuration** | High | Medium | Medium | Low | Medium | Medium | Medium | — *(Excluded)* |
+| **Number System** | Medium | Medium | Low | Low | Medium | Medium | Low | **High** |
+| **Modern Math (P&C / Prob)** | Medium | High | High | High | Medium | Medium | Medium | **Medium** |
+| **Data Interpretation** | High | High | Medium | High | High | High | High | **High (DI)** |
+| **Analytical & Logical Reasoning**| High | High | High | High | High | High | High | **High (MSR/CR)** |
+| **Reading Comprehension** | High | High | Low | High | Medium | High | High | **High** |
+| **Verbal Ability / Grammar** | High (VA) | High (VA) | High (Grammar) | High (Vocab/Grammar) | High (Vocab) | High (Vocab) | High (Grammar) | — *(SC Excluded)* |
+| **Critical Reasoning** | Medium | High | Low | Medium | Low | Medium | Low | **Core** |
+| **Data Insights (DS/MSR/Charts)** | — | — | — | — | — | — | — | **Core** |
+| **Decision Making** | — | **Core** | — | — | — | — | — | — |
+| **Innovation & Entrepreneurship** | — | — | — | — | **Core** | — | — | — |
+| **Economic & Business Env.** | — | — | — | — | — | **Core** | — | — |
+| **Abstract / Visual Reasoning** | — | — | — | — | — | — | **Core** | — |
+| **General Awareness / GK** | — | Part 2 | — | — | **Core** | — | — | — |

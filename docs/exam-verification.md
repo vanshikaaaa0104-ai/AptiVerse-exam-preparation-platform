@@ -169,6 +169,28 @@ Below are the verified exam blueprints codified in the AptiVerse database and ru
 
 ---
 
+### 3.8 GMAT (The GMAT Exam / Focus Edition)
+- **Convening Authority**: Graduate Management Admission Council (GMAC)
+- **Official Website**: `https://www.mba.com`
+- **Source Authority**: Graduate Management Admission Council (GMAC) Official Exam Specifications
+- **Source URL**: `https://www.mba.com/exams/gmat-exam/about/exam-structure`
+- **Verification Status**: `VERIFIED` (Official Exam Blueprint) | `DERIVED` (Recommended Preparation Taxonomy)
+- **Official Structure**:
+  - **Total Duration**: 135 minutes (2 hours 15 minutes), plus one optional 10-minute break between any two sections.
+  - **Sectional Time Limit**: 45 minutes per section strictly enforced (3 sections $\times$ 45 minutes).
+  - **Order of Sections**: Test-taker has complete flexibility to choose section order prior to test launch.
+  - **Review & Edit Policy**: Questions can be bookmarked; test-takers may review and edit up to 3 answers per section before section submission.
+  - **Total Questions**: 64 questions.
+    1. **Quantitative Reasoning**: 21 questions (45 minutes). Focuses exclusively on Problem Solving (Arithmetic and Algebra; Geometry is explicitly excluded). On-screen calculator NOT allowed.
+    2. **Verbal Reasoning**: 23 questions (45 minutes). Focuses on Critical Reasoning (CR) and Reading Comprehension (RC); Sentence Correction is explicitly excluded. On-screen calculator NOT allowed.
+    3. **Data Insights**: 20 questions (45 minutes). Integrates Data Sufficiency (DS), Multi-Source Reasoning (MSR), Table Analysis, Graphics Interpretation, and Two-Part Analysis. Digital on-screen calculator IS provided.
+  - **Scoring & Percentiles**:
+    - Total Score Scale: 205 to 805 (in 10-point increments, ending in 5).
+    - Section Score Scale: 60 to 90 (in 1-point increments) for each of the three sections. All three sections carry equal weight in the total score composite.
+  - **Taxonomy Label**: Sourced under `"Recommended Preparation Taxonomy (Derived from Past Exam Trends)"` as GMAC does not publish an exhaustive micro-chapter syllabus.
+
+---
+
 ## 4. Exam Rule Configuration Schema (Database & Engine)
 
 To guarantee zero hardcoding in UI components, each exam's runtime rules are defined as serializable structured records in the database:

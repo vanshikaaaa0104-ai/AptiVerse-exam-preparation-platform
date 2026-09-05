@@ -15,11 +15,8 @@ import {
   Target,
   Zap,
   Clock,
-  CheckCircle2,
-  Sliders,
   Sparkles,
   ArrowRight,
-  Flame,
 } from "lucide-react";
 
 interface TopicPracticeModalProps {
@@ -27,6 +24,8 @@ interface TopicPracticeModalProps {
   onClose: () => void;
   topicName: string;
   topicSlug: string;
+  chapterName?: string;
+  chapterSlug?: string;
   subtopicName?: string;
   subtopicSlug?: string;
   examSlug?: string;
@@ -37,6 +36,8 @@ export function TopicPracticeModal({
   onClose,
   topicName,
   topicSlug,
+  chapterName,
+  chapterSlug,
   subtopicName,
   subtopicSlug,
   examSlug = "cat",
@@ -48,16 +49,18 @@ export function TopicPracticeModal({
 
   const handleLaunchPractice = () => {
     onClose();
-    const effectiveTopic = subtopicSlug || topicSlug;
+    const effectiveSlug = chapterSlug || subtopicSlug || topicSlug;
+    const effectiveTitle = chapterName || subtopicName || topicName;
     const query = new URLSearchParams({
-      topic: effectiveTopic,
+      topic: effectiveSlug,
       difficulty,
       count: questionCount.toString(),
       timed: timerMode === "TIMED" ? "true" : "false",
       exam: examSlug,
-      title: subtopicName || topicName,
+      title: effectiveTitle,
+      ...(chapterSlug ? { chapter: chapterSlug } : {}),
     });
-    router.push(`/quiz/${effectiveTopic}?${query.toString()}`);
+    router.push(`/quiz/${effectiveSlug}?${query.toString()}`);
   };
 
   return (

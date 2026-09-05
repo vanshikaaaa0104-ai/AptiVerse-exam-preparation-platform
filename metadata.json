@@ -1,6 +1,6 @@
 {
   "name": "AptiVerse",
-  "description": "AptiVerse V2.0 – Intelligent competitive exam preparation platform for CAT, XAT, SNAP, NMAT, CMAT, MAT, and MAH MBA CET with full syllabus explorer, adaptive drills, and official mock simulators.",
+  "description": "AptiVerse V2.0 – Intelligent competitive exam preparation platform for CAT, XAT, SNAP, NMAT, CMAT, MAT, MAH MBA CET, and GMAT with chapterwise practice, adaptive drills, and official mock simulators.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

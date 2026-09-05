@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   BookOpen,
@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getStoredCurrentUser, UserProfile } from "@/lib/auth-storage";
+import { getStoredCurrentUser, logoutCurrentUser, UserProfile } from "@/lib/auth-storage";
 
 interface NavItem {
   label: string;
@@ -39,6 +39,7 @@ interface NavItem {
 
 export function Sidebar({ userRole }: { userRole?: string }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     learn: true,
@@ -405,14 +406,18 @@ export function Sidebar({ userRole }: { userRole?: string }) {
           <span className="font-mono text-[10px] text-indigo-400/90 font-semibold">
             {currentUser?.targetExamName || "CAT 2026"}
           </span>
-          <Link
-            href="/login"
-            className="text-[11px] text-slate-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
-            title="Switch or Sign in with another account"
+          <button
+            type="button"
+            onClick={() => {
+              logoutCurrentUser();
+              router.push("/sign-in");
+            }}
+            className="text-[11px] text-slate-400 hover:text-indigo-300 flex items-center gap-1 transition-colors cursor-pointer"
+            title="Sign out of current account"
           >
             <LogOut className="h-3 w-3" />
-            <span>Switch User</span>
-          </Link>
+            <span>Sign Out</span>
+          </button>
         </div>
       </div>
     </aside>

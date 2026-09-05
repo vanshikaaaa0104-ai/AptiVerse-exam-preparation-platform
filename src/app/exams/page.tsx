@@ -40,7 +40,7 @@ export default function ExamsDirectoryPage() {
     if (filterType === "all") return true;
     if (filterType === "national") return ["cat", "xat", "cmat"].includes(exam.examSlug);
     if (filterType === "speed") return ["snap", "mah-cet", "mat"].includes(exam.examSlug);
-    if (filterType === "adaptive") return ["nmat"].includes(exam.examSlug);
+    if (filterType === "adaptive") return ["nmat", "gmat"].includes(exam.examSlug);
     return true;
   });
 
@@ -57,7 +57,7 @@ export default function ExamsDirectoryPage() {
               <Badge variant="verified">V2.0 UPDATED</Badge>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Complete official syllabus, section weightages, test blueprints, and targeted practice pathways for all 7 major MBA entrance exams.
+              Complete official syllabus, section weightages, test blueprints, and targeted practice pathways for all 8 major competitive entrance exams.
             </p>
           </div>
           <div className="flex items-center gap-3">

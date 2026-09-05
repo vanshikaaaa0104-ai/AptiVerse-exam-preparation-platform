@@ -231,9 +231,32 @@ model ExamTopic {
   updatedAt   DateTime    @updatedAt
 
   subtopics   ExamSubtopic[]
+  chapters    Chapter[]
   questions   Question[]
 
   @@index([sectionId])
+}
+
+model Chapter {
+  id              String      @id @default(cuid())
+  topicId         String
+  topic           ExamTopic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  name            String      // e.g. "Time, Speed & Distance"
+  slug            String
+  description     String?
+  orderIndex      Int         @default(0)
+  taxonomyType    String      @default("RECOMMENDED_PREPARATION_TAXONOMY") // "RECOMMENDED_PREPARATION_TAXONOMY" | "OFFICIAL_SYLLABUS"
+
+  concepts        Concept[]
+  questions       Question[]
+  chapterProgress UserChapterProgress[]
+  chapterTests    ChapterTest[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@unique([topicId, slug])
+  @@index([topicId, orderIndex])
 }
 
 model ExamSubtopic {

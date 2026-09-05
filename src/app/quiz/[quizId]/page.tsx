@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { SAMPLE_VERIFIED_QUESTIONS, type VerifiedQuestionItem } from "@/lib/seed-data";
 import { formatTimeRemaining } from "@/lib/utils";
+import { QuizTimer, type QuizTimerTickData } from "@/components/quiz";
 
 type PaletteStatus =
   | "NOT_VISITED"
@@ -51,7 +52,6 @@ export default function QuizRunnerPage({
   const totalQuestions = questions.length;
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [secondsRemaining, setSecondsRemaining] = useState(900); // 15 mins
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isPaletteDrawerOpen, setIsPaletteDrawerOpen] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState<string>("Just now");
@@ -76,26 +76,20 @@ export default function QuizRunnerPage({
     timeSpentSec: 0,
   };
 
-  // Resilient Countdown Timer
-  useEffect(() => {
-    if (secondsRemaining <= 0) {
-      handleSubmit();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setSecondsRemaining((prev) => prev - 1);
-      setUserResponses((prev) => ({
+  // Timer tick handler for tracking per-question time spent
+  const handleTimerTick = (data: QuizTimerTickData) => {
+    setUserResponses((prev) => {
+      const cur = prev[currentIndex];
+      if (!cur) return prev;
+      return {
         ...prev,
         [currentIndex]: {
-          ...prev[currentIndex],
-          timeSpentSec: (prev[currentIndex]?.timeSpentSec || 0) + 1,
+          ...cur,
+          timeSpentSec: (cur.timeSpentSec || 0) + 1,
         },
-      }));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [secondsRemaining, currentIndex]);
+      };
+    });
+  };
 
   // Handle Option Selection
   const handleSelectOption = (label: string) => {
@@ -214,13 +208,6 @@ export default function QuizRunnerPage({
     {} as Record<PaletteStatus, number>
   );
 
-  const timerWarningClass =
-    secondsRemaining < 60
-      ? "text-red-400 animate-pulse font-extrabold"
-      : secondsRemaining < 300
-      ? "text-amber-400 font-bold"
-      : "text-slate-100 font-mono";
-
   return (
     <div className="min-h-screen bg-[#080c14] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white select-none">
       {/* Top Test Navigation Bar */}
@@ -239,13 +226,14 @@ export default function QuizRunnerPage({
           </div>
         </div>
 
-        {/* Center: Live Resilient Countdown Timer */}
-        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 shadow-inner">
-          <Clock className="h-4 w-4 text-indigo-400" />
-          <span className={`text-sm tracking-wider ${timerWarningClass}`}>
-            {formatTimeRemaining(secondsRemaining)}
-          </span>
-        </div>
+        {/* Center: Live Synchronized QuizTimer */}
+        <QuizTimer
+          testId={`quiz-${resolvedParams.quizId}`}
+          totalDurationSec={900}
+          onAutoSubmit={handleSubmit}
+          onTick={handleTimerTick}
+          variant="detailed"
+        />
 
         {/* Right: Autosave Status & Submit Button */}
         <div className="flex items-center gap-3">

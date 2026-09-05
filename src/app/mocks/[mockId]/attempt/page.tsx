@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { SAMPLE_VERIFIED_QUESTIONS } from "@/lib/seed-data";
 import { formatTimeRemaining } from "@/lib/utils";
+import { QuizTimer, type QuizTimerTickData } from "@/components/quiz";
 
 type PaletteStatus =
   | "NOT_VISITED"
@@ -51,7 +52,6 @@ export default function MockAttemptSimulatorPage({
   ];
 
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  const [sectionTimeRemaining, setSectionTimeRemaining] = useState(2400); // 40 mins
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [calcInput, setCalcInput] = useState("0");
@@ -74,26 +74,33 @@ export default function MockAttemptSimulatorPage({
     return initial;
   });
 
-  // Sectional Timer Effect
-  useEffect(() => {
-    if (sectionTimeRemaining <= 0) {
-      // Auto-advance to next section if available, else submit test
-      if (currentSectionIndex < sections.length - 1) {
-        setCurrentSectionIndex((prev) => prev + 1);
-        setSectionTimeRemaining(2400);
-        setCurrentQIndex(0);
-      } else {
-        handleSubmit();
-      }
-      return;
+  // Section transition handlers
+  const handleSectionTimeUp = (completedIdx: number, nextIdx: number | null) => {
+    if (nextIdx !== null) {
+      setCurrentSectionIndex(nextIdx);
+      setCurrentQIndex(0);
     }
+  };
 
-    const timer = setInterval(() => {
-      setSectionTimeRemaining((prev) => prev - 1);
-    }, 1000);
+  const handleSectionChange = (newIdx: number) => {
+    setCurrentSectionIndex(newIdx);
+    setCurrentQIndex(0);
+  };
 
-    return () => clearInterval(timer);
-  }, [sectionTimeRemaining, currentSectionIndex]);
+  // Track per-question time spent via synchronized QuizTimer tick
+  const handleTimerTick = (data: QuizTimerTickData) => {
+    setResponses((prev) => {
+      const cur = prev[currentQIndex];
+      if (!cur) return prev;
+      return {
+        ...prev,
+        [currentQIndex]: {
+          ...cur,
+          timeSpentSec: (cur.timeSpentSec || 0) + 1,
+        },
+      };
+    });
+  };
 
   const handleSelectOption = (label: string) => {
     setResponses((prev) => ({
@@ -229,10 +236,17 @@ export default function MockAttemptSimulatorPage({
             <span className="hidden md:inline font-mono">Calc</span>
           </button>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs font-bold text-amber-400 shadow-inner">
-            <Clock className="h-3.5 w-3.5" />
-            <span>{formatTimeRemaining(sectionTimeRemaining)}</span>
-          </div>
+          <QuizTimer
+            testId={`mock-${resolvedParams.mockId}`}
+            sections={sections}
+            activeSectionIndex={currentSectionIndex}
+            isSectionLocked={true}
+            onAutoSubmit={handleSubmit}
+            onSectionTimeUp={handleSectionTimeUp}
+            onSectionChange={handleSectionChange}
+            onTick={handleTimerTick}
+            variant="detailed"
+          />
 
           <Button
             variant="accent"

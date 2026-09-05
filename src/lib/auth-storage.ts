@@ -107,6 +107,7 @@ const EXAM_DISPLAY_NAMES: Record<string, string> = {
   cmat: "CMAT 2026",
   mat: "MAT 2026",
   "mah-cet": "MAH MBA CET 2026",
+  gmat: "GMAT 2026",
 };
 
 function notifyAuthChange(user: UserProfile | null) {
@@ -283,7 +284,12 @@ export function logoutCurrentUser(): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.removeItem(STORAGE_KEY_CURRENT);
+    // Clear cookies client-side immediately
+    document.cookie = "authjs.session-token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "aptiverse_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     notifyAuthChange(null);
+    // Call server sign-out route
+    fetch("/api/auth/sign-out", { method: "POST" }).catch(() => {});
   } catch (e) {
     console.warn("Failed to clear current session", e);
   }

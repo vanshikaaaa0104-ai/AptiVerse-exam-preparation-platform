@@ -857,6 +857,186 @@ export const INITIAL_EXAMS_DATA: ExamData[] = [
       },
     ],
   },
+  {
+    slug: "gmat",
+    name: "Graduate Management Admission Test",
+    shortName: "GMAT 2026",
+    conductingBody: "Graduate Management Admission Council (GMAC)",
+    officialWebsite: "https://www.mba.com/exams/gmat-exam",
+    description:
+      "Global standardized computer-adaptive examination for international business schools, assessing Quantitative Reasoning, Verbal Reasoning, and Data Insights across 64 questions (score scale 205-805).",
+    isPopular: true,
+    version: {
+      year: 2026,
+      versionName: "GMAT 2026 Official Pattern",
+      totalDurationMinutes: 135,
+      totalQuestions: 64,
+      totalMarks: 805,
+      hasSectionalTiming: true,
+      allowSectionSwitching: false,
+      allowReview: true,
+      hasCalculator: true,
+      verificationStatus: "VERIFIED",
+      sourceAuthority: "Graduate Management Admission Council (GMAC) Official Exam Specifications",
+      sourceUrl: "https://www.mba.com/exams/gmat-exam/about/exam-structure",
+    },
+    sections: [
+      {
+        name: "Quantitative Reasoning",
+        slug: "quantitative-reasoning",
+        durationMinutes: 45,
+        questionCount: 21,
+        positiveMarks: 1.0,
+        negativeMarks: 0.0,
+        titaPositiveMarks: 1.0,
+        titaNegativeMarks: 0.0,
+        orderIndex: 1,
+        topics: [
+          {
+            name: "Problem Solving: Arithmetic (Recommended Preparation Taxonomy)",
+            slug: "gmat-quant-arithmetic",
+            weightage: "50% of QR",
+            subtopics: [
+              {
+                name: "Number Properties & Fractions",
+                slug: "number-properties",
+                concepts: [
+                  {
+                    title: "Divisibility, Primes & Factors",
+                    slug: "divisibility-primes",
+                    summary: "Prime factorizations, even-odd parity, and divisibility rules without calculators.",
+                    theoryHtml: "<p>GMAC tests number properties conceptually. Key focus is prime factor distribution and remainder constraints.</p>",
+                    keyFormulas: ["Total factors = (p+1)(q+1)...", "Remainder property: Dividend = Divisor * Quotient + Remainder"],
+                    tricks: "Test extreme cases (0, negatives, fractions) for integer constraints.",
+                    commonTraps: "Assuming variables must be positive integers unless stated.",
+                    readTimeMin: 6,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Problem Solving: Algebra (Recommended Preparation Taxonomy)",
+            slug: "gmat-quant-algebra",
+            weightage: "50% of QR",
+            subtopics: [
+              {
+                name: "Linear, Quadratic & Inequalities",
+                slug: "algebra-inequalities",
+                concepts: [
+                  {
+                    title: "Inequalities & Absolute Values",
+                    slug: "inequalities-abs",
+                    summary: "Solving quadratic inequalities and modulus equations under strict algebraic sign rules.",
+                    theoryHtml: "<p>Inequalities flip signs when multiplied or divided by negative quantities. Always evaluate roots separately.</p>",
+                    keyFormulas: ["|x| < a => -a < x < a", "|x| > a => x > a or x < -a"],
+                    tricks: "Never multiply both sides by an unknown variable whose sign is indeterminate.",
+                    commonTraps: "Canceling variables across inequalities without testing for negative values.",
+                    readTimeMin: 5,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Verbal Reasoning",
+        slug: "verbal-reasoning",
+        durationMinutes: 45,
+        questionCount: 23,
+        positiveMarks: 1.0,
+        negativeMarks: 0.0,
+        titaPositiveMarks: 1.0,
+        titaNegativeMarks: 0.0,
+        orderIndex: 2,
+        topics: [
+          {
+            name: "Critical Reasoning (Recommended Preparation Taxonomy)",
+            slug: "gmat-critical-reasoning",
+            weightage: "50% of VR",
+            subtopics: [
+              {
+                name: "Argument Analysis & Logic",
+                slug: "cr-argument-analysis",
+                concepts: [
+                  {
+                    title: "Assumption & Weakening Frameworks",
+                    slug: "assumption-weakening",
+                    summary: "Pinpoint unstated necessary assumptions using the Negation Test.",
+                    theoryHtml: "<p>An assumption is an unstated premise required for the conclusion to stand. Negating the correct assumption destroys the argument.</p>",
+                    keyFormulas: ["Premise + Assumption = Conclusion", "Negation Test: If ~Assumption then ~Conclusion"],
+                    tricks: "Beware of extreme wording in correct assumption answers (e.g. 'always', 'never').",
+                    commonTraps: "Confusing what strengthens an argument with what is strictly necessary.",
+                    readTimeMin: 7,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Reading Comprehension (Recommended Preparation Taxonomy)",
+            slug: "gmat-reading-comprehension",
+            weightage: "50% of VR",
+            subtopics: [
+              {
+                name: "Passage Architecture & Inferences",
+                slug: "rc-architecture",
+                concepts: [
+                  {
+                    title: "Main Idea & Structural Shift Identification",
+                    slug: "main-idea-structure",
+                    summary: "Identify author perspective vs reported viewpoints across dense academic texts.",
+                    theoryHtml: "<p>Track pivot keywords (However, Nevertheless, In contrast) to map author stance.</p>",
+                    keyFormulas: ["Primary Purpose = Overall communicative objective", "Inference = Must be 100% true based solely on passage"],
+                    tricks: "Eliminate answers introducing external facts not mentioned or implied by text.",
+                    commonTraps: "Selecting true outside-world facts that are not supported by the passage context.",
+                    readTimeMin: 6,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Data Insights",
+        slug: "data-insights",
+        durationMinutes: 45,
+        questionCount: 20,
+        positiveMarks: 1.0,
+        negativeMarks: 0.0,
+        titaPositiveMarks: 1.0,
+        titaNegativeMarks: 0.0,
+        orderIndex: 3,
+        topics: [
+          {
+            name: "Data Sufficiency & Multi-Source Synthesis (Recommended Preparation Taxonomy)",
+            slug: "gmat-data-insights-core",
+            weightage: "100% of DI",
+            subtopics: [
+              {
+                name: "Data Sufficiency Framework",
+                slug: "data-sufficiency",
+                concepts: [
+                  {
+                    title: "DS Systematic 12-TEN Protocol",
+                    slug: "ds-protocol",
+                    summary: "AD/BCE elimination matrix to evaluate Statement 1 and Statement 2 without over-calculating.",
+                    theoryHtml: "<p>Test Statement 1 alone. If sufficient => A or D. If insufficient => B, C, or E. Carry zero assumptions between statements.</p>",
+                    keyFormulas: ["Value Question: Yields exactly 1 unique value", "Yes/No Question: Yields definitive YES or definitive NO"],
+                    tricks: "Stop calculating the second you confirm a single unique numerical solution exists.",
+                    commonTraps: "Carrying facts from Statement 1 into Statement 2 when evaluating Statement 2 alone.",
+                    readTimeMin: 8,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export interface VerifiedQuestionItem {

@@ -29,6 +29,8 @@ model User {
   notifications       Notification[]
   studySessions       StudySession[]
   questionHistories   UserQuestionHistory[]
+  chapterProgress     UserChapterProgress[]
+  chapterTestAttempts ChapterTestAttempt[]
 }
 
 model Profile {
@@ -125,8 +127,34 @@ model ExamTopic {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
+  chapters    Chapter[]
   subtopics   ExamSubtopic[]
   questions   Question[]
+}
+
+model Chapter {
+  id              String      @id @default(cuid())
+  topicId         String
+  topic           ExamTopic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  name            String
+  slug            String
+  description     String?
+  orderIndex      Int         @default(0)
+  
+  // Taxonomy governance: "RECOMMENDED_PREPARATION_TAXONOMY" or "OFFICIAL_SYLLABUS"
+  taxonomyType    String      @default("RECOMMENDED_PREPARATION_TAXONOMY")
+  
+  // Associated content & test assets
+  concepts        Concept[]
+  questions       Question[]
+  chapterProgress UserChapterProgress[]
+  chapterTests    ChapterTest[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@unique([topicId, slug])
+  @@index([topicId, orderIndex])
 }
 
 model ExamSubtopic {
@@ -146,9 +174,11 @@ model ExamSubtopic {
 }
 
 model Concept {
-  id          String       @id @default(cuid())
-  subtopicId  String
-  subtopic    ExamSubtopic @relation(fields: [subtopicId], references: [id], onDelete: Cascade)
+  id          String        @id @default(cuid())
+  subtopicId  String?
+  subtopic    ExamSubtopic? @relation(fields: [subtopicId], references: [id], onDelete: Cascade)
+  chapterId   String?
+  chapter     Chapter?      @relation(fields: [chapterId], references: [id], onDelete: SetNull)
   title       String
   slug        String
   summary     String
@@ -173,6 +203,8 @@ model Question {
   topic              ExamTopic?         @relation(fields: [topicId], references: [id], onDelete: SetNull)
   subtopicId         String?
   subtopic           ExamSubtopic?      @relation(fields: [subtopicId], references: [id], onDelete: SetNull)
+  chapterId          String?
+  chapter            Chapter?           @relation(fields: [chapterId], references: [id], onDelete: SetNull)
   conceptId          String?
   concept            Concept?           @relation(fields: [conceptId], references: [id], onDelete: SetNull)
 
@@ -425,4 +457,72 @@ model Notification {
   isRead    Boolean  @default(false)
   linkUrl   String?
   createdAt DateTime @default(now())
+}
+
+// -----------------------------------------------------------------------------
+// V2 CHAPTERWISE ARCHITECTURE & TEST ENGINE
+// -----------------------------------------------------------------------------
+
+model UserChapterProgress {
+  id                 String    @id @default(cuid())
+  userId             String
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterId          String
+  chapter            Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  
+  // NOT_STARTED, IN_PROGRESS, NEEDS_REVISION, MASTERED
+  masteryStatus      String    @default("NOT_STARTED")
+  
+  questionsAttempted Int       @default(0)
+  questionsCorrect   Int       @default(0)
+  accuracyPct        Float     @default(0.0)
+  practiceTimeSec    Int       @default(0)
+  
+  lastPracticedAt    DateTime?
+  updatedAt          DateTime  @updatedAt
+  createdAt          DateTime  @default(now())
+
+  @@unique([userId, chapterId])
+  @@index([userId, masteryStatus])
+}
+
+model ChapterTest {
+  id              String        @id @default(cuid())
+  chapterId       String
+  chapter         Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  title           String
+  slug            String        @unique
+  description     String?
+  durationMinutes Int           @default(20)
+  totalQuestions  Int           @default(15)
+  totalMarks      Float         @default(45.0)
+  positiveMarks   Float         @default(3.0)
+  negativeMarks   Float         @default(1.0)
+  isLive          Boolean       @default(true)
+  
+  attempts        ChapterTestAttempt[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([chapterId])
+}
+
+model ChapterTestAttempt {
+  id             String       @id @default(cuid())
+  chapterTestId  String
+  chapterTest    ChapterTest  @relation(fields: [chapterTestId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  status         String       @default("IN_PROGRESS") // IN_PROGRESS, COMPLETED, TIMED_OUT
+  startedAt      DateTime     @default(now())
+  completedAt    DateTime?
+  score          Float        @default(0.0)
+  accuracyPct    Float        @default(0.0)
+  timeSpentSec   Int          @default(0)
+  answersJson    String?      // Serialized JSON of submitted answers & server evaluation
+  
+  createdAt      DateTime     @default(now())
+
+  @@index([userId, chapterTestId])
 }

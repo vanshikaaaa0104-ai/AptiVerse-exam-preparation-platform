@@ -915,6 +915,108 @@ export const EXAM_SYLLABI_DATABASE: Record<string, ExamSyllabusInfo> = {
       },
     ],
   },
+  gmat: {
+    examSlug: "gmat",
+    examName: "GMAT 2026",
+    shortName: "GMAT",
+    fullForm: "Graduate Management Admission Test",
+    conductingBody: "Graduate Management Admission Council (GMAC)",
+    officialWebsite: "https://www.mba.com/exams/gmat-exam",
+    difficulty: "Adaptive",
+    durationMinutes: 135,
+    totalQuestions: 64,
+    totalMarks: 805,
+    description:
+      "Global standardized computer-adaptive entrance assessment for top international MBA and business master's programs. Features Quantitative Reasoning, Verbal Reasoning, and Data Insights across 64 questions (score scale 205-805).",
+    sections: [
+      {
+        name: "Quantitative Reasoning",
+        slug: "quantitative-reasoning",
+        durationMinutes: 45,
+        questionCount: 21,
+        marksPerQuestion: 1,
+        negativeMarks: 0,
+        topics: [
+          {
+            name: "Problem Solving: Arithmetic (Recommended Preparation Taxonomy)",
+            slug: "gmat-quant-arithmetic",
+            subtopics: [
+              { name: "Percentages, Fractions & Decimals", slug: "percentages-fractions", conceptsCount: 4, completedCount: 3, accuracy: 82, status: "MASTERED" },
+              { name: "Ratio, Proportion & Rates", slug: "ratio-rates", conceptsCount: 4, completedCount: 3, accuracy: 85, status: "MASTERED" },
+              { name: "Averages & Statistics (Mean, Median, Mode, SD)", slug: "averages-statistics", conceptsCount: 4, completedCount: 2, accuracy: 72, status: "IN_PROGRESS" },
+              { name: "Work & Rate Problems", slug: "work-rate", conceptsCount: 3, completedCount: 2, accuracy: 68, status: "IN_PROGRESS" },
+              { name: "Distance, Speed & Relative Motion", slug: "distance-speed", conceptsCount: 4, completedCount: 3, accuracy: 78, status: "IN_PROGRESS" },
+              { name: "Number Properties (Divisibility, Primes, Remainders)", slug: "number-properties", conceptsCount: 5, completedCount: 3, accuracy: 75, status: "IN_PROGRESS" },
+            ],
+          },
+          {
+            name: "Problem Solving: Algebra (Recommended Preparation Taxonomy)",
+            slug: "gmat-quant-algebra",
+            subtopics: [
+              { name: "Linear & Quadratic Equations", slug: "linear-quadratic", conceptsCount: 5, completedCount: 4, accuracy: 84, status: "MASTERED" },
+              { name: "Inequalities & Absolute Value", slug: "inequalities-absolute", conceptsCount: 4, completedCount: 2, accuracy: 60, status: "WEAK" },
+              { name: "Exponents, Roots & Surds", slug: "exponents-roots", conceptsCount: 4, completedCount: 3, accuracy: 80, status: "MASTERED" },
+              { name: "Functions & Sequences", slug: "functions-sequences", conceptsCount: 3, completedCount: 2, accuracy: 70, status: "IN_PROGRESS" },
+              { name: "Permutations, Combinations & Probability", slug: "pnc-probability", conceptsCount: 5, completedCount: 2, accuracy: 58, status: "WEAK" },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Verbal Reasoning",
+        slug: "verbal-reasoning",
+        durationMinutes: 45,
+        questionCount: 23,
+        marksPerQuestion: 1,
+        negativeMarks: 0,
+        topics: [
+          {
+            name: "Critical Reasoning (Recommended Preparation Taxonomy)",
+            slug: "gmat-critical-reasoning",
+            subtopics: [
+              { name: "Assumptions & Stated Premise Analysis", slug: "assumptions", conceptsCount: 5, completedCount: 4, accuracy: 80, status: "MASTERED" },
+              { name: "Weaken the Argument", slug: "weaken-argument", conceptsCount: 4, completedCount: 3, accuracy: 74, status: "IN_PROGRESS" },
+              { name: "Strengthen the Argument", slug: "strengthen-argument", conceptsCount: 4, completedCount: 3, accuracy: 78, status: "IN_PROGRESS" },
+              { name: "Inference & Conclusion", slug: "inference-conclusion", conceptsCount: 4, completedCount: 3, accuracy: 72, status: "IN_PROGRESS" },
+              { name: "Method of Reasoning & Boldface Roles", slug: "boldface-method", conceptsCount: 4, completedCount: 2, accuracy: 55, status: "WEAK" },
+              { name: "Evaluate the Argument & Paradoxes", slug: "evaluate-paradox", conceptsCount: 4, completedCount: 2, accuracy: 65, status: "IN_PROGRESS" },
+            ],
+          },
+          {
+            name: "Reading Comprehension (Recommended Preparation Taxonomy)",
+            slug: "gmat-reading-comprehension",
+            subtopics: [
+              { name: "Main Idea & Primary Purpose", slug: "main-idea", conceptsCount: 4, completedCount: 3, accuracy: 86, status: "MASTERED" },
+              { name: "Supporting Details & Retrieval", slug: "supporting-details", conceptsCount: 4, completedCount: 4, accuracy: 90, status: "MASTERED" },
+              { name: "Inferences & Author's Tone", slug: "inference-tone", conceptsCount: 4, completedCount: 3, accuracy: 76, status: "IN_PROGRESS" },
+              { name: "Structural Organization & Logic of Passages", slug: "passage-structure", conceptsCount: 4, completedCount: 3, accuracy: 82, status: "MASTERED" },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Data Insights",
+        slug: "data-insights",
+        durationMinutes: 45,
+        questionCount: 20,
+        marksPerQuestion: 1,
+        negativeMarks: 0,
+        topics: [
+          {
+            name: "Data Sufficiency & Interactive Analysis (Recommended Preparation Taxonomy)",
+            slug: "gmat-data-insights-core",
+            subtopics: [
+              { name: "Data Sufficiency (Quantitative & Real-World)", slug: "data-sufficiency", conceptsCount: 6, completedCount: 4, accuracy: 74, status: "IN_PROGRESS" },
+              { name: "Multi-Source Reasoning (MSR Tabbed Analysis)", slug: "multi-source-reasoning", conceptsCount: 5, completedCount: 3, accuracy: 66, status: "IN_PROGRESS" },
+              { name: "Table Analysis (Sortable Spreadsheets & Stats)", slug: "table-analysis", conceptsCount: 4, completedCount: 3, accuracy: 82, status: "MASTERED" },
+              { name: "Graphics Interpretation (Scatter, Trend, Bar & Bubble)", slug: "graphics-interpretation", conceptsCount: 4, completedCount: 3, accuracy: 80, status: "MASTERED" },
+              { name: "Two-Part Analysis (Quantitative & Verbal Dual Grids)", slug: "two-part-analysis", conceptsCount: 5, completedCount: 2, accuracy: 58, status: "WEAK" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export function getExamSyllabus(examSlug: string): ExamSyllabusInfo | undefined {

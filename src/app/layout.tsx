@@ -22,9 +22,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "AptiVerse | Intelligent Competitive Exam Preparation Platform",
   description:
-    "AptiVerse is the premier preparation operating system for CAT, XAT, SNAP, NMAT, CMAT, MAT, and MAH MBA CET. Learn concepts, practice adaptive questions, simulate official mocks, and analyze performance with precision.",
+    "AptiVerse is the premier preparation operating system for CAT, XAT, SNAP, NMAT, CMAT, MAT, MAH MBA CET, and GMAT. Learn concepts, practice adaptive questions, simulate official mocks, and analyze performance with precision.",
   keywords: [
     "CAT 2026",
+    "GMAT 2026",
     "XAT Preparation",
     "SNAP Exam",
     "NMAT GMAC",
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
     "Quantitative Aptitude",
     "DILR",
     "VARC",
+    "Data Insights",
     "Mock Tests",
     "Decision Making",
   ],
