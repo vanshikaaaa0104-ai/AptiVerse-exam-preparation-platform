@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import path from "path";
+import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: any;
@@ -7,11 +8,6 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient(): any {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PrismaClient } = require("@prisma/client");
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PrismaBetterSqlite3 } = require("@prisma/adapter-better-sqlite3");
-
     const dbPath = path.join(process.cwd(), "dev.db");
     const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
     return new PrismaClient({ adapter });

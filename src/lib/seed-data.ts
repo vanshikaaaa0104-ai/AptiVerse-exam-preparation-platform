@@ -1103,7 +1103,7 @@ export const SAMPLE_VERIFIED_QUESTIONS: VerifiedQuestionItem[] = [
     difficulty: "HARD",
     questionType: "MCQ",
     questionText:
-      "A can complete a project in 18 days, and B can complete the same project in 24 days. They work together for 4 days, after which B leaves. A is then joined by C, whose efficiency is 50% more than B's. In how many more days will the remaining project be completed by A and C together?",
+      "A can complete a project in 18 days, and B can complete the same project in 24 days. They work together for 4 days, after which B leaves. A is then joined by C, whose efficiency is 60% more than B's. In how many more days will the remaining project be completed by A and C together?",
     options: [
       { label: "A", text: "4 days" },
       { label: "B", text: "5 days" },
@@ -1116,22 +1116,258 @@ export const SAMPLE_VERIFIED_QUESTIONS: VerifiedQuestionItem[] = [
     source: "AptiVerse Verified QA Question Bank",
     solution: {
       detailedText:
-        "Let the total work be the LCM of 18 and 24, which is 72 units. Efficiency of A = 72/18 = 4 units/day. Efficiency of B = 72/24 = 3 units/day. Since C is 50% more efficient than B, Efficiency of C = 3 * 1.5 = 4.5 units/day. In the first 4 days, A and B together complete 4 * (4 + 3) = 28 units. Remaining work = 72 - 28 = 44 units. Daily work done by A and C = 4 + 4.5 = 8.5 units/day. More days needed = 44 / 8.5 ≈ 5.17 days (or if work is 72 units: with efficiency 4 and 4.8 = 5 days exactly with integer adjustments).",
+        "Let total work be LCM(18, 24) = 72 units. Efficiency of A = 72 / 18 = 4 units/day. Efficiency of B = 72 / 24 = 3 units/day. Since C is 60% more efficient than B, C's efficiency = 3 × 1.6 = 4.8 units/day. Combined efficiency of A + C = 4 + 4.8 = 8.8 units/day. In the first 4 days, A and B together complete 4 × (4 + 3) = 28 units. Remaining work = 72 - 28 = 44 units. Additional days needed by A and C = 44 / 8.8 = 5 days.",
       stepByStep: [
         "1. Assume Total Work = LCM(18, 24) = 72 units.",
         "2. Efficiency of A = 72 / 18 = 4 units/day.",
         "3. Efficiency of B = 72 / 24 = 3 units/day.",
-        "4. Efficiency of C = 3 * 1.6 = 4.8 units/day.",
+        "4. Efficiency of C = 3 × (1 + 0.60) = 4.8 units/day.",
         "5. Combined efficiency of A + C = 4 + 4.8 = 8.8 units/day.",
-        "6. Work done in first 4 days by A + B = 4 * (4 + 3) = 28 units.",
+        "6. Work done in first 4 days by A + B = 4 × (4 + 3) = 28 units.",
         "7. Remaining work = 72 - 28 = 44 units.",
-        "8. Additional days required = 44 / 8.8 = 5 days.",
+        "8. Additional days required for A and C = 44 / 8.8 = 5 days.",
       ],
       shortcutMethod:
-        "Units approach: Total = 72 units. (A+B) do 7 units/day * 4 = 28 units. Remaining 44 units. (A+C) do 4 + 4.8 = 8.8 units/day. 44 / 8.8 = 5 days.",
+        "Units approach: Total = 72 units. (A+B) do 7 units/day × 4 = 28 units. Remaining = 44 units. (A+C) do 4 + 4.8 = 8.8 units/day. Days = 44 / 8.8 = 5 days.",
       conceptTested: "Time & Work - Multi-Worker Efficiency & Partial Replacement",
       commonMistakeTrap:
-        "Calculating C's efficiency as 50% of A rather than 50% more than B.",
+        "Calculating C's efficiency as 60% of B (1.8 units/day) rather than 60% more than B (4.8 units/day).",
+    },
+  },
+  {
+    id: "q-pl-001",
+    topicSlug: "arithmetic",
+    subtopicSlug: "percentages",
+    difficulty: "EASY",
+    questionType: "MCQ",
+    questionText:
+      "A shopkeeper marks an article 40% above the cost price and allows a discount of 15% on the marked price. If his cost price is ₹800, what is the net profit earned?",
+    options: [
+      { label: "A", text: "₹144" },
+      { label: "B", text: "₹152" },
+      { label: "C", text: "₹160" },
+      { label: "D", text: "₹172" },
+    ],
+    correctAnswer: "B",
+    estimatedTimeSec: 90,
+    isDemo: true,
+    source: "AptiVerse Verified QA Question Bank",
+    solution: {
+      detailedText:
+        "Marked Price (MP) = 800 × (1 + 0.40) = ₹1120. Selling Price (SP) after 15% discount = 1120 × (1 - 0.15) = 1120 × 0.85 = ₹952. Net Profit = SP - CP = 952 - 800 = ₹152.",
+      stepByStep: [
+        "1. Calculate Marked Price: MP = 800 × 1.40 = ₹1120.",
+        "2. Calculate Selling Price: SP = 1120 × 0.85 = ₹952.",
+        "3. Net Profit = SP - CP = 952 - 800 = ₹152.",
+      ],
+      shortcutMethod:
+        "Net Profit % = Marked% - Discount% - (Marked% × Discount%)/100 = 40 - 15 - (40 × 15)/100 = 25 - 6 = 19%. Profit = 19% of 800 = ₹152.",
+      conceptTested: "Percentages - Successive Markup & Discount Relations",
+      commonMistakeTrap:
+        "Calculating the 15% discount on the Cost Price (₹800) instead of the Marked Price (₹1120).",
+    },
+  },
+  {
+    id: "q-pl-002",
+    topicSlug: "arithmetic",
+    subtopicSlug: "profit-loss",
+    difficulty: "MEDIUM",
+    questionType: "MCQ",
+    questionText:
+      "A dishonest merchant uses a faulty balance that reads 1000g for every 800g actual weight, and simultaneously claims to sell goods at a discount of 10% on the cost price. What is his net profit or loss percentage?",
+    options: [
+      { label: "A", text: "8% Profit" },
+      { label: "B", text: "10% Profit" },
+      { label: "C", text: "12.5% Profit" },
+      { label: "D", text: "15% Profit" },
+    ],
+    correctAnswer: "C",
+    estimatedTimeSec: 100,
+    isDemo: true,
+    source: "AptiVerse Verified QA Question Bank",
+    solution: {
+      detailedText:
+        "Let the cost price of 1g = ₹1. The merchant dispenses 800g of goods, so his actual cost incurred = ₹800. The scale reads 1000g, for which he bills the customer with a 10% discount: SP = 1000 × (1 - 0.10) = ₹900. Net Profit = SP - CP = 900 - 800 = ₹100. Net Profit % = (100 / 800) × 100 = 12.5% Profit.",
+      stepByStep: [
+        "1. Let CP per gram = ₹1. Actual cost incurred for 800g = ₹800.",
+        "2. Billed weight = 1000g with 10% discount => Revenue collected = 1000 × 0.90 = ₹900.",
+        "3. Absolute profit = 900 - 800 = ₹100.",
+        "4. Profit percentage = (100 / 800) × 100 = 12.5% Profit.",
+      ],
+      shortcutMethod:
+        "Effective Multiplier = (Billed Weight / Actual Dispensed Weight) × (1 - Discount) = (1000 / 800) × 0.90 = 1.25 × 0.90 = 1.125 => +12.5% Profit.",
+      conceptTested: "Profit & Loss - Dishonest Dealer & Faulty Weight Metric",
+      commonMistakeTrap:
+        "Computing the profit percentage over 1000g rather than the actual 800g dispensed cost base.",
+    },
+  },
+  {
+    id: "q-alg-005",
+    topicSlug: "algebra",
+    subtopicSlug: "quadratic-equations",
+    difficulty: "HARD",
+    questionType: "MCQ",
+    questionText:
+      "Find the complete range of values of k for which the roots of the quadratic equation x^2 - (k - 3)x + k = 0 are real and distinct.",
+    options: [
+      { label: "A", text: "k < 1 or k > 9" },
+      { label: "B", text: "1 < k < 9" },
+      { label: "C", text: "k <= 1" },
+      { label: "D", text: "k >= 9" },
+    ],
+    correctAnswer: "A",
+    estimatedTimeSec: 110,
+    isDemo: true,
+    source: "AptiVerse Verified QA Question Bank",
+    solution: {
+      detailedText:
+        "For a quadratic equation ax^2 + bx + c = 0 to have real and distinct roots, the discriminant Δ = b^2 - 4ac must be strictly greater than 0. Here a = 1, b = -(k - 3), and c = k. Thus, Δ = [-(k - 3)]^2 - 4(1)(k) = k^2 - 6k + 9 - 4k = k^2 - 10k + 9 > 0. Factoring: (k - 1)(k - 9) > 0. By the sign-scheme/wavy curve method, the product is positive outside the roots: k < 1 or k > 9.",
+      stepByStep: [
+        "1. Write the condition for real and distinct roots: Discriminant Δ > 0.",
+        "2. Compute Δ: Δ = (-(k - 3))^2 - 4(1)(k) = k^2 - 6k + 9 - 4k = k^2 - 10k + 9.",
+        "3. Factor the quadratic in k: (k - 1)(k - 9) > 0.",
+        "4. Critical roots are k = 1 and k = 9. For product > 0, k lies in the outer intervals: k < 1 or k > 9.",
+      ],
+      shortcutMethod:
+        "Roots of k^2 - 10k + 9 = 0 are 1 and 9. Since the coefficient of k^2 is positive, the quadratic is > 0 strictly outside the interval [1, 9], giving k < 1 or k > 9 in under 20 seconds.",
+      conceptTested: "Algebra - Nature of Roots & Quadratic Discriminant Inequalities",
+      commonMistakeTrap:
+        "Selecting the inner interval 1 < k < 9 where the discriminant is negative (complex roots).",
+    },
+  },
+  {
+    id: "q-geo-006",
+    topicSlug: "geometry",
+    subtopicSlug: "triangles",
+    difficulty: "MEDIUM",
+    questionType: "MCQ",
+    questionText:
+      "In a right-angled triangle, the lengths of the two perpendicular legs are 12 cm and 16 cm. What is the radius of the inscribed circle (inradius) of this triangle in cm?",
+    options: [
+      { label: "A", text: "3 cm" },
+      { label: "B", text: "4 cm" },
+      { label: "C", text: "5 cm" },
+      { label: "D", text: "6 cm" },
+    ],
+    correctAnswer: "B",
+    estimatedTimeSec: 90,
+    isDemo: true,
+    source: "AptiVerse Verified QA Question Bank",
+    solution: {
+      detailedText:
+        "By Pythagoras' theorem, hypotenuse c = √(12^2 + 16^2) = √(144 + 256) = √400 = 20 cm. For any right-angled triangle with perpendicular legs a, b and hypotenuse c, the inradius r is given by r = (a + b - c) / 2. Substituting: r = (12 + 16 - 20) / 2 = 8 / 2 = 4 cm. Alternatively, using r = Area / s where Area = (1/2) × 12 × 16 = 96 cm^2 and s = (12 + 16 + 20) / 2 = 24 cm, r = 96 / 24 = 4 cm.",
+      stepByStep: [
+        "1. Calculate hypotenuse c = √(12^2 + 16^2) = 20 cm.",
+        "2. Use right triangle inradius theorem: r = (a + b - c) / 2.",
+        "3. Substitute values: r = (12 + 16 - 20) / 2 = 8 / 2 = 4 cm.",
+      ],
+      shortcutMethod:
+        "Standard 3-4-5 triangle scaled by factor 4 (sides 12-16-20). In a 3-4-5 right triangle, inradius = (3+4-5)/2 = 1. Scaling by 4 gives r = 1 × 4 = 4 cm immediately.",
+      conceptTested: "Geometry - Right Triangle Properties & Inscribed Circles",
+      commonMistakeTrap:
+        "Calculating circumradius R = c / 2 = 20 / 2 = 10 cm instead of inradius r.",
+    },
+  },
+  {
+    id: "q-num-007",
+    topicSlug: "number-systems",
+    subtopicSlug: "remainders",
+    difficulty: "MEDIUM",
+    questionType: "MCQ",
+    questionText:
+      "What is the remainder when 2^100 is divided by 7?",
+    options: [
+      { label: "A", text: "1" },
+      { label: "B", text: "2" },
+      { label: "C", text: "4" },
+      { label: "D", text: "6" },
+    ],
+    correctAnswer: "B",
+    estimatedTimeSec: 80,
+    isDemo: true,
+    source: "AptiVerse Verified QA Question Bank",
+    solution: {
+      detailedText:
+        "Examine the remainders of successive powers of 2 when divided by 7 (cyclicity): 2^1 ≡ 2 (mod 7), 2^2 ≡ 4 (mod 7), 2^3 = 8 ≡ 1 (mod 7). Since 2^3 ≡ 1 (mod 7), the remainder repeats with a period (cyclicity) of 3. Dividing the exponent 100 by 3: 100 = 3 × 33 + 1 (remainder 1). Therefore, 2^100 = (2^3)^33 × 2^1 ≡ 1^33 × 2 ≡ 2 (mod 7).",
+      stepByStep: [
+        "1. Find the cyclicity of powers of 2 mod 7: 2^1 = 2, 2^2 = 4, 2^3 = 8 ≡ 1 (mod 7).",
+        "2. The cycle period is 3.",
+        "3. Divide the power by cycle length: 100 = 3 × 33 + 1, so the remainder power is 1.",
+        "4. Remainder = 2^1 mod 7 = 2.",
+      ],
+      shortcutMethod:
+        "2^3 ≡ 1 (mod 7). 100 mod 3 = 1 => Remainder is 2^1 = 2.",
+      conceptTested: "Number Systems - Modular Arithmetic & Power Cyclicity",
+      commonMistakeTrap:
+        "Forgetting to reduce the exponent modulo the cycle length 3.",
+    },
+  },
+  {
+    id: "q-lr-001",
+    topicSlug: "logical-reasoning",
+    subtopicSlug: "arrangements",
+    difficulty: "EASY",
+    questionType: "MCQ",
+    questionText:
+      "Six people P, Q, R, S, T, and U sit in a circle facing the center. P is between Q and R. S is second to the left of U. T is to the immediate right of R. Who is sitting directly opposite to P?",
+    options: [
+      { label: "A", text: "Q" },
+      { label: "B", text: "S" },
+      { label: "C", text: "T" },
+      { label: "D", text: "U" },
+    ],
+    correctAnswer: "B",
+    estimatedTimeSec: 90,
+    isDemo: true,
+    source: "AptiVerse Verified DILR Question Bank",
+    solution: {
+      detailedText:
+        "Fix positions 1 to 6 clockwise. Let P be at position 1. P is between Q and R, so R and Q must be at positions 2 and 6 (or vice versa). Since T is to the immediate right of R (counter-clockwise when facing inward), R must be at pos 2 and T at pos 3. Then Q is at pos 6. The remaining positions are 4 and 5 for S and U. S is second to the left of U, which places U at pos 5 and S at pos 4 (since 2 steps clockwise from pos 5 is pos 4). Directly opposite to pos 1 (P) in a 6-person circle is pos 4, which is occupied by S.",
+      stepByStep: [
+        "1. Place P at pos 1. P is flanked by Q and R at pos 2 and 6.",
+        "2. T is immediate right of R => R is pos 2, T is pos 3.",
+        "3. S is 2nd left of U => U is pos 5, S is pos 4.",
+        "4. Opposite pos 1 (P) in a 6-seat circle is pos 1 + 3 = pos 4 = S.",
+      ],
+      shortcutMethod:
+        "In a 6-person circle, the person opposite index i is (i + 3) mod 6. P at 1 => Opposite is pos 4 = S.",
+      conceptTested: "Logical Reasoning - Circular Seating Arrangement Deductions",
+      commonMistakeTrap:
+        "Reversing left and right orientation for inwards-facing circle positions.",
+    },
+  },
+  {
+    id: "q-di-008",
+    topicSlug: "data-interpretation",
+    subtopicSlug: "tournaments",
+    difficulty: "HARD",
+    questionType: "MCQ",
+    questionText:
+      "In a single round-robin tournament consisting of 5 teams, each team plays every other team exactly once. A win awards 2 points, a tie awards 1 point to each team, and a loss awards 0 points. If exactly 2 matches ended in ties, what is the grand total of points accumulated across all 5 teams at the conclusion of the tournament?",
+    options: [
+      { label: "A", text: "18 points" },
+      { label: "B", text: "20 points" },
+      { label: "C", text: "22 points" },
+      { label: "D", text: "24 points" },
+    ],
+    correctAnswer: "B",
+    estimatedTimeSec: 100,
+    isDemo: true,
+    source: "AptiVerse Verified DILR Question Bank",
+    solution: {
+      detailedText:
+        "In a single round-robin tournament with n teams, total matches played = n(n - 1) / 2 = 5 × 4 / 2 = 10 matches. In any decisive match (one team wins, one loses), the winner receives 2 points and the loser 0 points, adding 2 points to the total pool. In any tied match, each team receives 1 point, adding 1 + 1 = 2 points to the total pool. Because every single match produces exactly 2 points regardless of whether it is won or drawn, the total points across all teams is invariant: 10 matches × 2 points/match = 20 points.",
+      stepByStep: [
+        "1. Calculate total matches: N = 5 × (5 - 1) / 2 = 10 matches.",
+        "2. In a win/loss match: Points generated = 2 + 0 = 2.",
+        "3. In a tie match: Points generated = 1 + 1 = 2.",
+        "4. Total points generated = 10 matches × 2 points/match = 20 points.",
+      ],
+      shortcutMethod:
+        "Tournament Invariant Rule: Total Points = 2 × Total Matches whenever Win=2 and Draw=1. 2 × 10 = 20 points, independent of the number of ties.",
+      conceptTested: "Data Interpretation - Round-Robin Points Invariants & Tournaments",
+      commonMistakeTrap:
+        "Subtracting points for ties or assuming ties reduce total points generated.",
     },
   },
   {
@@ -1185,6 +1421,41 @@ export const SAMPLE_VERIFIED_QUESTIONS: VerifiedQuestionItem[] = [
     },
   },
   {
+    id: "q-va-009",
+    topicSlug: "verbal-ability",
+    subtopicSlug: "para-jumbles",
+    difficulty: "MEDIUM",
+    questionType: "MCQ",
+    questionText:
+      "The following four sentences (A, B, C, D) need to be arranged to form a coherent paragraph:\n(A) Furthermore, this rapid transition has exposed structural deficits in data governance and regulatory compliance across global markets.\n(B) Over the past decade, cloud computing has transitioned from an experimental enterprise cost-saver to the fundamental operating substrate of global commerce.\n(C) Without standardized multi-jurisdictional frameworks, financial and healthcare institutions risk catastrophic systemic vulnerabilities.\n(D) As business processes migrated to centralized distributed servers, reliance on single cloud hyperscalers grew exponentially.\nWhich sequence forms the most coherent paragraph?",
+    options: [
+      { label: "A", text: "B - D - A - C" },
+      { label: "B", text: "B - A - D - C" },
+      { label: "C", text: "D - B - A - C" },
+      { label: "D", text: "A - B - D - C" },
+    ],
+    correctAnswer: "A",
+    estimatedTimeSec: 100,
+    isDemo: true,
+    source: "AptiVerse Verified VARC Question Bank",
+    solution: {
+      detailedText:
+        "Sentence B serves as the overarching introductory anchor by establishing the macro shift of cloud computing over the past decade. Sentence D naturally follows B by explaining how business processes migrated to distributed servers. Sentence A introduces the complicating factor ('Furthermore, this rapid transition has exposed structural deficits...'). Sentence C concludes by articulating the severe risk if regulatory frameworks remain unaddressed. Thus, the coherent sequence is B - D - A - C.",
+      stepByStep: [
+        "1. Sentence B introduces the subject without backward referents: ideal opening sentence.",
+        "2. Sentence D describes the execution of that transition.",
+        "3. Sentence A connects using additive connector 'Furthermore, this rapid transition...'.",
+        "4. Sentence C provides the consequence of those deficits, concluding the thought.",
+        "5. Order: B - D - A - C.",
+      ],
+      shortcutMethod:
+        "Identify opening sentence B and the mandatory cause-effect pair A - C. Only Option A offers sequence B - D - A - C.",
+      conceptTested: "VARC - Para Jumbles & Cohesion Markers",
+      commonMistakeTrap:
+        "Starting with Sentence D, which presumes a pre-established context of cloud migration.",
+    },
+  },
+  {
     id: "q-dm-004",
     topicSlug: "ethical-business-cases",
     subtopicSlug: "stakeholder-prioritization",
@@ -1234,3 +1505,4 @@ export const SAMPLE_VERIFIED_QUESTIONS: VerifiedQuestionItem[] = [
     },
   },
 ];
+

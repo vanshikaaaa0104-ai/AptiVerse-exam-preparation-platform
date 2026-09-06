@@ -35,13 +35,13 @@ export function DialogContent({
 }) {
   return (
     <div
-      className={`relative w-full max-w-lg rounded-2xl bg-[#0e1422] border border-slate-800 p-6 shadow-2xl animate-in zoom-in-95 duration-150 ${className}`}
+      className={`relative w-full max-w-lg rounded-2xl glass-panel text-foreground p-6 shadow-2xl animate-in zoom-in-95 duration-150 ${className}`}
     >
       {onClose && (
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 text-slate-400 hover:text-white transition-colors cursor-pointer"
+          className="absolute right-4 top-4 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer"
         >
           <X className="h-4 w-4" />
         </button>
@@ -68,7 +68,7 @@ export function DialogTitle({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <h3 className={`text-lg font-bold text-white ${className}`}>{children}</h3>;
+  return <h3 className={`text-lg font-bold text-slate-900 dark:text-white font-heading ${className}`}>{children}</h3>;
 }
 
 export function DialogDescription({
@@ -78,5 +78,5 @@ export function DialogDescription({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <p className={`text-xs text-slate-400 ${className}`}>{children}</p>;
+  return <p className={`text-xs text-slate-700 dark:text-slate-300 leading-relaxed ${className}`}>{children}</p>;
 }

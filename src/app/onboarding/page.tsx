@@ -24,20 +24,32 @@ import { getStoredCurrentUser, setStoredCurrentUser, UserProfile } from "@/lib/a
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [dailyGoal, setDailyGoal] = useState(25);
-  const [studyTimeMin, setStudyTimeMin] = useState(120);
-  const [preferredTime, setPreferredTime] = useState<"Morning" | "Afternoon" | "Evening" | "Night">("Evening");
+  const [user, setUser] = useState<UserProfile | null>(() => {
+    if (typeof window !== "undefined") {
+      return getStoredCurrentUser();
+    }
+    return null;
+  });
+  const [dailyGoal, setDailyGoal] = useState(() => {
+    if (typeof window !== "undefined") {
+      return getStoredCurrentUser().dailyQuestionGoal || 25;
+    }
+    return 25;
+  });
+  const [studyTimeMin, setStudyTimeMin] = useState(() => {
+    if (typeof window !== "undefined") {
+      return getStoredCurrentUser().dailyStudyTimeMin || 120;
+    }
+    return 120;
+  });
+  const [preferredTime, setPreferredTime] = useState<"Morning" | "Afternoon" | "Evening" | "Night">(() => {
+    if (typeof window !== "undefined") {
+      return getStoredCurrentUser().preferredStudyTime || "Evening";
+    }
+    return "Evening";
+  });
   const [step, setStep] = useState<1 | 2>(1);
   const [isGenerating, setIsGenerating] = useState(false);
-
-  useEffect(() => {
-    const current = getStoredCurrentUser();
-    setUser(current);
-    if (current.dailyQuestionGoal) setDailyGoal(current.dailyQuestionGoal);
-    if (current.dailyStudyTimeMin) setStudyTimeMin(current.dailyStudyTimeMin);
-    if (current.preferredStudyTime) setPreferredTime(current.preferredStudyTime);
-  }, []);
 
   const handleCompleteOnboarding = () => {
     if (!user) return;

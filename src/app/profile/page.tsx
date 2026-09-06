@@ -27,31 +27,47 @@ import { Badge } from "@/components/ui/badge";
 import { getStoredCurrentUser, setStoredCurrentUser, UserProfile } from "@/lib/auth-storage";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [targetExam, setTargetExam] = useState("cat");
-  const [targetDate, setTargetDate] = useState("2026-11-29");
-  const [prepLevel, setPrepLevel] = useState<"Beginner" | "Intermediate" | "Advanced">("Intermediate");
-  const [dailyGoal, setDailyGoal] = useState(25);
-  const [studyTimeMin, setStudyTimeMin] = useState(120);
-  const [preferredTime, setPreferredTime] = useState<"Morning" | "Afternoon" | "Evening" | "Night">("Evening");
+  const [user, setUser] = useState<UserProfile | null>(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser();
+    return null;
+  });
+  const [name, setName] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().name;
+    return "";
+  });
+  const [email, setEmail] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().email;
+    return "";
+  });
+  const [phone, setPhone] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().phone || "";
+    return "";
+  });
+  const [targetExam, setTargetExam] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().targetExam || "cat";
+    return "cat";
+  });
+  const [targetDate, setTargetDate] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().targetDate || "2026-11-29";
+    return "2026-11-29";
+  });
+  const [prepLevel, setPrepLevel] = useState<"Beginner" | "Intermediate" | "Advanced">(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().prepLevel || "Intermediate";
+    return "Intermediate";
+  });
+  const [dailyGoal, setDailyGoal] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().dailyQuestionGoal || 25;
+    return 25;
+  });
+  const [studyTimeMin, setStudyTimeMin] = useState(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().dailyStudyTimeMin || 120;
+    return 120;
+  });
+  const [preferredTime, setPreferredTime] = useState<"Morning" | "Afternoon" | "Evening" | "Night">(() => {
+    if (typeof window !== "undefined") return getStoredCurrentUser().preferredStudyTime || "Evening";
+    return "Evening";
+  });
   const [savedSuccess, setSavedSuccess] = useState(false);
-
-  useEffect(() => {
-    const current = getStoredCurrentUser();
-    setUser(current);
-    setName(current.name);
-    setEmail(current.email);
-    setPhone(current.phone || "");
-    setTargetExam(current.targetExam || "cat");
-    setTargetDate(current.targetDate || "2026-11-29");
-    setPrepLevel(current.prepLevel || "Intermediate");
-    setDailyGoal(current.dailyQuestionGoal || 25);
-    setStudyTimeMin(current.dailyStudyTimeMin || 120);
-    setPreferredTime(current.preferredStudyTime || "Evening");
-  }, []);
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();

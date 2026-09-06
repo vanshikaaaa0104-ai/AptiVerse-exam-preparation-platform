@@ -35,21 +35,21 @@ export default function QuizResultPage({
 
   const [activeFilter, setActiveFilter] = useState<"ALL" | "CORRECT" | "INCORRECT" | "SKIPPED">("ALL");
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
-  const [userAnswers, setUserAnswers] = useState<Record<number, { selectedOption: string | null; timeSpentSec: number }>>({});
-
-  useEffect(() => {
-    // Load student attempt responses from sessionStorage
+  const [userAnswers, setUserAnswers] = useState<Record<number, { selectedOption: string | null; timeSpentSec: number }>>(() => {
     if (typeof window !== "undefined") {
       const raw = sessionStorage.getItem(`attempt-${resolvedParams.quizId}`);
       if (raw) {
         try {
-          setUserAnswers(JSON.parse(raw));
+          return JSON.parse(raw);
         } catch (e) {
           console.error("Failed to parse attempt data", e);
         }
       }
     }
+    return {};
+  });
 
+  useEffect(() => {
     // Trigger celebration confetti
     try {
       confetti({
@@ -60,7 +60,7 @@ export default function QuizResultPage({
     } catch {
       // Ignored in SSR
     }
-  }, [resolvedParams.quizId]);
+  }, []);
 
   // Compute evaluation stats
   let correctCount = 0;
