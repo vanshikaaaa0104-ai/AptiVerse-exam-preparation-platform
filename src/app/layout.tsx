@@ -1,22 +1,34 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider, ThemeScript } from "@/components/theme/ThemeProvider";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-heading",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+  variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#080c14",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#060a13" },
+    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -48,11 +60,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body
-        className={`${inter.variable} ${plusJakarta.variable} font-sans antialiased min-h-screen bg-[#080c14] text-slate-100 selection:bg-indigo-500 selection:text-white`}
+        className={`${outfit.variable} ${plusJakarta.variable} ${jetBrainsMono.variable} font-sans antialiased min-h-screen bg-background text-foreground selection:bg-indigo-500 selection:text-white transition-colors duration-200`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

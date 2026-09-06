@@ -77,11 +77,11 @@ export function TopicPracticeModal({
               </Badge>
             )}
           </div>
-          <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
-            <Target className="h-5 w-5 text-indigo-400" />
+          <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 font-heading">
+            <Target className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
             <span>Practice: {subtopicName || topicName}</span>
           </DialogTitle>
-          <DialogDescription className="text-xs text-slate-400">
+          <DialogDescription className="text-xs text-slate-700 dark:text-slate-300">
             Configure your practice session. Questions include step-by-step solutions, speed shortcuts, and common trap warnings.
           </DialogDescription>
         </DialogHeader>
@@ -89,7 +89,7 @@ export function TopicPracticeModal({
         <div className="space-y-5 py-2">
           {/* Difficulty Selection */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300">Select Difficulty</label>
+            <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">Select Difficulty</label>
             <div className="grid grid-cols-4 gap-2">
               {(
                 [
@@ -105,12 +105,12 @@ export function TopicPracticeModal({
                   onClick={() => setDifficulty(item.id)}
                   className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                     difficulty === item.id
-                      ? "bg-indigo-600/20 border-indigo-500 text-white shadow-sm"
-                      : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white"
+                      ? "bg-indigo-600/15 border-indigo-500 text-indigo-950 dark:text-white font-bold shadow-xs"
+                      : "bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                   }`}
                 >
                   <span className="block text-xs font-bold">{item.label}</span>
-                  <span className="text-[10px] text-slate-400 block">{item.desc}</span>
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 block">{item.desc}</span>
                 </button>
               ))}
             </div>
@@ -118,7 +118,7 @@ export function TopicPracticeModal({
 
           {/* Question Count Selection */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300">Question Count</label>
+            <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">Question Count</label>
             <div className="grid grid-cols-3 gap-2">
               {[
                 { count: 5, time: "~8 Mins", label: "Quick Sprint" },
@@ -131,12 +131,12 @@ export function TopicPracticeModal({
                   onClick={() => setQuestionCount(item.count)}
                   className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                     questionCount === item.count
-                      ? "bg-indigo-600/20 border-indigo-500 text-white shadow-sm"
-                      : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white"
+                      ? "bg-indigo-600/15 border-indigo-500 text-indigo-950 dark:text-white font-bold shadow-xs"
+                      : "bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                   }`}
                 >
                   <span className="block text-sm font-bold">{item.count} Questions</span>
-                  <span className="text-[10px] text-slate-400 block">{item.time}</span>
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 block">{item.time}</span>
                 </button>
               ))}
             </div>
@@ -144,21 +144,21 @@ export function TopicPracticeModal({
 
           {/* Timer Mode Selection */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300">Timer Mode</label>
+            <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">Timer Mode</label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setTimerMode("TIMED")}
                 className={`p-2.5 rounded-xl border text-left flex items-start gap-2.5 transition-all cursor-pointer ${
                   timerMode === "TIMED"
-                    ? "bg-indigo-600/20 border-indigo-500 text-white"
-                    : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white"
+                    ? "bg-indigo-600/15 border-indigo-500 text-indigo-950 dark:text-white font-bold shadow-xs"
+                    : "bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                 }`}
               >
-                <Clock className="h-4 w-4 text-indigo-400 mt-0.5 shrink-0" />
+                <Clock className="h-4 w-4 text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
                 <div>
                   <span className="block text-xs font-bold">Timed Simulation</span>
-                  <span className="text-[10px] text-slate-400 block">Strict countdown timer</span>
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 block">Strict countdown timer</span>
                 </div>
               </button>
               <button
@@ -166,22 +166,22 @@ export function TopicPracticeModal({
                 onClick={() => setTimerMode("UNTIMED")}
                 className={`p-2.5 rounded-xl border text-left flex items-start gap-2.5 transition-all cursor-pointer ${
                   timerMode === "UNTIMED"
-                    ? "bg-indigo-600/20 border-indigo-500 text-white"
-                    : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white"
+                    ? "bg-indigo-600/15 border-indigo-500 text-indigo-950 dark:text-white font-bold shadow-xs"
+                    : "bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                 }`}
               >
-                <Sparkles className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
+                <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                 <div>
                   <span className="block text-xs font-bold">Concept Learning</span>
-                  <span className="text-[10px] text-slate-400 block">Relaxed practice & solve</span>
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 block">Relaxed practice & solve</span>
                 </div>
               </button>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
-          <Button variant="ghost" size="sm" onClick={onClose} className="text-slate-400">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <Button variant="ghost" size="sm" onClick={onClose} className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
             Cancel
           </Button>
           <Button variant="accent" size="sm" onClick={handleLaunchPractice} className="gap-2">

@@ -66,25 +66,26 @@ export default function AdminQuestionsTablePage() {
 
   return (
     <AppShell userRole="ADMIN">
-      <div className="space-y-8 max-w-6xl mx-auto animate-in fade-in duration-200">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <Link href="/admin" className="hover:text-white transition-colors flex items-center gap-1">
+      <div className="space-y-8 max-w-6xl mx-auto animate-in fade-in duration-200 pb-12">
+        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+          <Link href="/admin" className="hover:text-indigo-600 dark:hover:text-white transition-colors flex items-center gap-1 font-medium">
             <ChevronLeft className="h-4 w-4" />
             <span>Back to Admin Overview</span>
           </Link>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        {/* Hero Header Banner */}
+        <div className="p-6 sm:p-8 rounded-3xl glass-panel relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-lg">
+          <div className="space-y-1.5 z-10">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight font-heading">
               Question Bank Repository
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
               Search, audit, and manage verified canonical questions across all subjects.
             </p>
           </div>
 
-          <Link href="/admin/questions/new">
+          <Link href="/admin/questions/new" className="z-10 shrink-0">
             <Button variant="accent" size="sm" className="gap-1.5 shadow-md shadow-indigo-600/20">
               <Plus className="h-4 w-4" />
               <span>Author Question</span>
@@ -95,13 +96,13 @@ export default function AdminQuestionsTablePage() {
         {/* Filter Controls */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <input
               type="text"
               placeholder="Search question text, topic, or ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500"
+              className="w-full pl-10 pr-4 py-2 rounded-xl glass-input text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none"
             />
           </div>
 
@@ -112,8 +113,8 @@ export default function AdminQuestionsTablePage() {
                 onClick={() => setSelectedStatus(status)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                   selectedStatus === status
-                    ? "bg-indigo-600 text-white"
-                    : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                    ? "bg-indigo-600 text-white shadow-xs"
+                    : "glass-nested text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 {status}
@@ -123,9 +124,9 @@ export default function AdminQuestionsTablePage() {
         </div>
 
         {/* Questions Data Table */}
-        <div className="overflow-hidden rounded-2xl border border-slate-800 bg-[#0e1422]">
+        <div className="overflow-hidden rounded-2xl glass-card">
           <table className="w-full text-left text-xs font-mono">
-            <thead className="border-b border-slate-800 bg-slate-900/80 text-slate-400 font-sans uppercase">
+            <thead className="border-b border-slate-200 dark:border-white/[0.08] bg-slate-100/60 dark:bg-white/[0.02] text-slate-700 dark:text-slate-400 font-sans uppercase font-bold">
               <tr>
                 <th className="p-4">ID</th>
                 <th className="p-4">Question Preview</th>
@@ -135,16 +136,16 @@ export default function AdminQuestionsTablePage() {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-200/80 dark:divide-white/[0.06]">
               {filtered.map((q) => {
                 const status = (q as any).verificationStatus || "VERIFIED";
                 return (
-                  <tr key={q.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="p-4 font-bold text-indigo-400">{q.id}</td>
-                    <td className="p-4 font-sans text-white max-w-xs sm:max-w-md truncate">
+                  <tr key={q.id} className="hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors">
+                    <td className="p-4 font-bold text-indigo-600 dark:text-indigo-400">{q.id}</td>
+                    <td className="p-4 font-sans text-slate-900 dark:text-white max-w-xs sm:max-w-md truncate font-medium">
                       {q.questionText}
                     </td>
-                    <td className="p-4 font-sans text-slate-300 capitalize">{q.topicSlug}</td>
+                    <td className="p-4 font-sans text-slate-700 dark:text-slate-300 capitalize">{q.topicSlug}</td>
                     <td className="p-4">
                       <Badge
                         variant={
@@ -170,7 +171,7 @@ export default function AdminQuestionsTablePage() {
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link href="/admin/verification">
-                          <button className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                          <button className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
                             <Eye className="h-4 w-4" />
                           </button>
                         </Link>

@@ -58,11 +58,12 @@ const speedBenchmarkData = [
 ];
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<UserProfile | null>(null);
-
-  useEffect(() => {
-    setUser(getStoredCurrentUser());
-  }, []);
+  const [user, setUser] = useState<UserProfile | null>(() => {
+    if (typeof window !== "undefined") {
+      return getStoredCurrentUser();
+    }
+    return null;
+  });
 
   // Compute countdown to target exam
   const calculateDaysLeft = (targetDateStr?: string) => {
@@ -84,19 +85,19 @@ export default function DashboardPage() {
     <AppShell>
       <div className="space-y-8 animate-in fade-in duration-200">
         {/* Top Welcome Banner & Daily Motivation */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200/80 dark:border-white/[0.06]">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-extrabold font-heading tracking-tight text-slate-900 dark:text-white">
                 Good morning, {studentFirstName} 👋
               </h1>
               <Badge variant="verified" className="text-[10px]">
                 {examName} Aspirant
               </Badge>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1">
               {daysLeft} days remaining for {examName}. You are on a{" "}
-              <span className="text-amber-400 font-semibold">{user?.currentStreak || 12}-day streak 🔥</span>.
+              <span className="text-amber-600 dark:text-amber-400 font-semibold">{user?.currentStreak || 12}-day streak 🔥</span>.
             </p>
           </div>
 
@@ -109,7 +110,7 @@ export default function DashboardPage() {
             </Link>
             <Link href={`/exams/${user?.targetExam || "cat"}`}>
               <Button variant="secondary" size="sm" className="gap-2">
-                <Compass className="h-4 w-4 text-indigo-400" />
+                <Compass className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                 <span>Explore {examName} Syllabus</span>
               </Button>
             </Link>
@@ -119,20 +120,20 @@ export default function DashboardPage() {
         {/* Bento Grid Row 1: Daily Goal, Exam Readiness, Continue Learning */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-5">
           {/* Today's Goal Card (4 Cols) */}
-          <Card className="lg:col-span-4 border border-indigo-500/20 bg-gradient-to-br from-indigo-950/30 via-[#0e1422] to-[#0e1422] flex flex-col justify-between">
+          <Card className="lg:col-span-4 border border-indigo-500/20 bg-gradient-to-br from-indigo-500/[0.05] dark:from-indigo-950/20 via-transparent to-transparent flex flex-col justify-between">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400">
+                  <div className="neu-icon text-indigo-600 dark:text-indigo-400 shadow-indigo-500/20">
                     <Target className="h-4 w-4" />
                   </div>
-                  <CardTitle className="text-base font-semibold">Today&apos;s Goal</CardTitle>
+                  <CardTitle className="text-base font-semibold font-heading text-slate-900 dark:text-white">Today&apos;s Goal</CardTitle>
                 </div>
                 <Badge variant="indigo" className="text-[11px] font-mono font-bold">
                   {completedToday} / {dailyGoal} Qs
                 </Badge>
               </div>
-              <CardDescription className="text-xs text-slate-400 pt-1">
+              <CardDescription className="text-xs text-slate-700 dark:text-slate-300 pt-1">
                 Maintain consistency to compound your exam speed and accuracy.
               </CardDescription>
             </CardHeader>
@@ -140,25 +141,25 @@ export default function DashboardPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="text-slate-300">Daily Target Completion</span>
-                  <span className="text-indigo-400 font-mono">{completionPercent}%</span>
+                  <span className="text-slate-800 dark:text-slate-200">Daily Target Completion</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-mono">{completionPercent}%</span>
                 </div>
                 <Progress value={completionPercent} className="h-2.5" />
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-xs font-medium">
-                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800/80 text-xs font-medium">
+                <div className="flex items-center gap-2 p-2 rounded-xl neu-stat">
+                  <Flame className="h-4 w-4 text-amber-500 dark:text-amber-400 fill-amber-400" />
                   <div>
-                    <p className="text-[10px] text-slate-400">Streak</p>
-                    <p className="text-xs font-bold text-white">{user?.currentStreak || 12} Days</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-semibold uppercase tracking-wider">Streak</p>
+                    <p className="text-xs font-bold font-mono text-slate-900 dark:text-white">{user?.currentStreak || 12} Days</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/60 border border-slate-800">
-                  <Zap className="h-4 w-4 text-indigo-400 fill-indigo-400" />
+                <div className="flex items-center gap-2 p-2 rounded-xl neu-stat">
+                  <Zap className="h-4 w-4 text-indigo-500 dark:text-indigo-400 fill-indigo-400" />
                   <div>
-                    <p className="text-[10px] text-slate-400">XP Today</p>
-                    <p className="text-xs font-bold text-white">+{user?.totalXp || 2450} XP</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-semibold uppercase tracking-wider">XP Today</p>
+                    <p className="text-xs font-bold font-mono text-slate-900 dark:text-white">+{user?.totalXp || 2450} XP</p>
                   </div>
                 </div>
               </div>
@@ -173,21 +174,21 @@ export default function DashboardPage() {
           </Card>
 
           {/* Target Exam Readiness (5 Cols) */}
-          <Card className="lg:col-span-5 border border-slate-800 bg-[#0e1422] flex flex-col justify-between">
+          <Card className="lg:col-span-5 flex flex-col justify-between">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-semibold">{examName} Readiness</CardTitle>
+                    <CardTitle className="text-base font-semibold font-heading text-slate-900 dark:text-white">{examName} Readiness</CardTitle>
                     <Badge variant="verified" className="text-[10px]">99th Percentile Goal</Badge>
                   </div>
-                  <CardDescription className="text-xs text-slate-400 pt-0.5">
+                  <CardDescription className="text-xs text-slate-700 dark:text-slate-300 pt-0.5">
                     Sectional mastery benchmarked against target cutoff criteria.
                   </CardDescription>
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-extrabold text-indigo-400 font-mono">68%</span>
-                  <p className="text-[10px] text-slate-400 uppercase font-semibold">Overall Index</p>
+                  <span className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">68%</span>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 uppercase font-bold tracking-wider">Overall Index</p>
                 </div>
               </div>
             </CardHeader>
@@ -195,31 +196,31 @@ export default function DashboardPage() {
             <CardContent className="space-y-3.5">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Quantitative Aptitude</span>
-                  <span className="text-emerald-400 font-bold font-mono">72% Mastery</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">Quantitative Aptitude</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono">72% Mastery</span>
                 </div>
                 <Progress value={72} indicatorClassName="bg-emerald-500" className="h-2" />
               </div>
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Logical Reasoning &amp; DI</span>
-                  <span className="text-amber-400 font-bold font-mono">61% Mastery</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">Logical Reasoning &amp; DI</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-bold font-mono">61% Mastery</span>
                 </div>
                 <Progress value={61} indicatorClassName="bg-amber-500" className="h-2" />
               </div>
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">Verbal Ability &amp; RC</span>
-                  <span className="text-indigo-400 font-bold font-mono">74% Mastery</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">Verbal Ability &amp; RC</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-bold font-mono">74% Mastery</span>
                 </div>
                 <Progress value={74} indicatorClassName="bg-indigo-500" className="h-2" />
               </div>
 
-              <div className="pt-2 flex items-center justify-between text-xs text-slate-400">
-                <span>Questions Solved: <strong className="text-white">{user?.questionsAttempted || 348}</strong></span>
-                <Link href="/analytics" className="text-indigo-400 hover:underline font-medium">
+              <div className="pt-2 flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 border-t border-slate-200/80 dark:border-slate-800/80">
+                <span>Questions Solved: <strong className="text-slate-900 dark:text-white font-mono">{user?.questionsAttempted || 348}</strong></span>
+                <Link href="/analytics" className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">
                   Detailed Analytics →
                 </Link>
               </div>
@@ -227,16 +228,16 @@ export default function DashboardPage() {
           </Card>
 
           {/* Continue Learning Widget (3 Cols) */}
-          <Card className="lg:col-span-3 border border-slate-800 bg-[#0e1422] flex flex-col justify-between">
+          <Card className="lg:col-span-3 flex flex-col justify-between">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <Badge variant="secondary" className="text-[10px]">CONTINUE LEARNING</Badge>
-                <span className="text-[11px] font-mono text-slate-400">In Progress</span>
+                <span className="text-[11px] font-mono text-slate-700 dark:text-slate-300 font-medium">In Progress</span>
               </div>
-              <CardTitle className="text-base font-semibold pt-1">
+              <CardTitle className="text-base font-semibold font-heading text-slate-900 dark:text-white pt-1">
                 {user?.lastTopic?.title || "Time & Work – Pipes & Cisterns"}
               </CardTitle>
-              <CardDescription className="text-xs text-slate-400">
+              <CardDescription className="text-xs text-slate-700 dark:text-slate-300">
                 {user?.lastTopic?.section || "Quantitative Aptitude"}
               </CardDescription>
             </CardHeader>
@@ -244,14 +245,14 @@ export default function DashboardPage() {
             <CardContent className="space-y-4">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-300">Module Progress</span>
-                  <span className="font-mono font-bold text-white">{user?.lastTopic?.progress || 60}%</span>
+                  <span className="text-slate-800 dark:text-slate-200 font-medium">Module Progress</span>
+                  <span className="font-mono font-bold text-slate-900 dark:text-white">{user?.lastTopic?.progress || 60}%</span>
                 </div>
                 <Progress value={user?.lastTopic?.progress || 60} className="h-2" />
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2">
-                <BookOpen className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
+              <div className="p-3 rounded-xl glass-subtle text-xs text-slate-800 dark:text-slate-200 flex items-start gap-2">
+                <BookOpen className="h-4 w-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
                 <span className="line-clamp-2">Next: Alternating work cycles & negative efficiency traps</span>
               </div>
 
@@ -268,18 +269,18 @@ export default function DashboardPage() {
         {/* Bento Grid Row 2: Next Best Action Banner & Weak Area Alerts */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           {/* Actionable Next Step Recommendation (7 Cols) */}
-          <Card className="lg:col-span-7 border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-[#0e1422] to-[#0e1422]">
+          <Card className="lg:col-span-7 border border-amber-500/20 bg-gradient-to-r from-amber-500/[0.05] dark:from-amber-950/10 via-transparent to-transparent">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                  <div className="neu-icon text-amber-500 dark:text-amber-400 shadow-amber-500/20">
                     <Sparkles className="h-4 w-4" />
                   </div>
                   <div>
-                    <CardTitle className="text-base font-semibold text-white">
+                    <CardTitle className="text-base font-semibold font-heading text-slate-900 dark:text-white">
                       Recommended for You
                     </CardTitle>
-                    <p className="text-[11px] text-amber-400/90 font-medium">
+                    <p className="text-[11px] text-amber-600 dark:text-amber-400/90 font-medium">
                       Automated Pedagogical Remediation
                     </p>
                   </div>
@@ -291,29 +292,29 @@ export default function DashboardPage() {
             </CardHeader>
 
             <CardContent className="space-y-4">
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                You are currently struggling with <strong className="text-white">Time &amp; Work (48% Accuracy)</strong> and your average solving time is <strong className="text-amber-400 font-mono">2m 15s</strong> (benchmark: 1m 45s).
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                You are currently struggling with <strong className="text-slate-900 dark:text-white">Time &amp; Work (48% Accuracy)</strong> and your average solving time is <strong className="text-amber-600 dark:text-amber-400 font-mono">2m 15s</strong> (benchmark: 1m 45s).
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <p className="text-[11px] font-semibold text-indigo-400 uppercase tracking-wider">
+                <div className="p-3 rounded-xl glass-subtle space-y-1">
+                  <p className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                     Step 1: Revise Theory
                   </p>
-                  <p className="text-xs text-white font-medium">
+                  <p className="text-xs text-slate-900 dark:text-white font-medium">
                     LCM Units &amp; Alternating Days Protocol
                   </p>
-                  <p className="text-[10px] text-slate-400">Estimated duration: 8 minutes</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Estimated duration: 8 minutes</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <p className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider">
+                <div className="p-3 rounded-xl glass-subtle space-y-1">
+                  <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
                     Step 2: Solve Drill
                   </p>
-                  <p className="text-xs text-white font-medium">
+                  <p className="text-xs text-slate-900 dark:text-white font-medium">
                     10 Medium Target Questions
                   </p>
-                  <p className="text-[10px] text-slate-400">Target accuracy: &gt; 80%</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Target accuracy: &gt; 80%</p>
                 </div>
               </div>
 
@@ -335,68 +336,68 @@ export default function DashboardPage() {
           </Card>
 
           {/* Weak Areas List (5 Cols) */}
-          <Card className="lg:col-span-5 border border-slate-800 bg-[#0e1422]">
+          <Card className="lg:col-span-5">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-amber-400" />
-                  <CardTitle className="text-base font-semibold">Priority Weak Areas</CardTitle>
+                  <AlertTriangle className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                  <CardTitle className="text-base font-semibold font-heading text-slate-900 dark:text-white">Priority Weak Areas</CardTitle>
                 </div>
-                <Link href="/mistakes" className="text-xs text-indigo-400 hover:underline">
+                <Link href="/mistakes" className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">
                   Mistake Book (7) →
                 </Link>
               </div>
-              <CardDescription className="text-xs text-slate-400">
+              <CardDescription className="text-xs text-slate-700 dark:text-slate-300">
                 Topics with accuracy &lt; 60% across recent diagnostic sessions.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl glass-subtle">
                 <div>
-                  <p className="text-xs font-semibold text-white">Time &amp; Work</p>
-                  <p className="text-[10px] text-slate-400">Quantitative Aptitude • 14 Attempts</p>
+                  <p className="text-xs font-semibold text-slate-900 dark:text-white">Time &amp; Work</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Quantitative Aptitude • 14 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="destructive" className="text-[10px] font-mono">
                     48% Acc
                   </Badge>
                   <Link href="/quiz/time-work">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-600 dark:text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl glass-subtle">
                 <div>
-                  <p className="text-xs font-semibold text-white">Linear &amp; Circular Arrangements</p>
-                  <p className="text-[10px] text-slate-400">Logical Reasoning • 18 Attempts</p>
+                  <p className="text-xs font-semibold text-slate-900 dark:text-white">Linear &amp; Circular Arrangements</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Logical Reasoning • 18 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="warning" className="text-[10px] font-mono">
                     53% Acc
                   </Badge>
                   <Link href="/quiz/linear-arrangements">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-600 dark:text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl glass-subtle">
                 <div>
-                  <p className="text-xs font-semibold text-white">Para Jumbles &amp; Coherence</p>
-                  <p className="text-[10px] text-slate-400">Verbal Ability • 21 Attempts</p>
+                  <p className="text-xs font-semibold text-slate-900 dark:text-white">Para Jumbles &amp; Coherence</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Verbal Ability • 21 Attempts</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="warning" className="text-[10px] font-mono">
                     57% Acc
                   </Badge>
                   <Link href="/quiz/para-jumbles">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-400">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-indigo-600 dark:text-indigo-400">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
@@ -409,18 +410,18 @@ export default function DashboardPage() {
         {/* Bento Grid Row 3: Performance Telemetry (Accuracy Trend & Pace Benchmark) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           {/* Accuracy Trend Chart (7 Cols) */}
-          <Card className="lg:col-span-7 border border-slate-800 bg-[#0e1422] p-6 space-y-4">
+          <Card className="lg:col-span-7 p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-semibold text-white">7-Day Accuracy Trend</h3>
-                <p className="text-xs text-slate-400">Daily practice accuracy vs 75% target benchmark</p>
+                <h3 className="text-base font-semibold font-heading text-slate-900 dark:text-white">7-Day Accuracy Trend</h3>
+                <p className="text-xs text-slate-700 dark:text-slate-300">Daily practice accuracy vs 75% target benchmark</p>
               </div>
               <div className="flex items-center gap-2 text-xs">
-                <span className="flex items-center gap-1 text-indigo-400 font-medium">
+                <span className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold">
                   <span className="h-2 w-2 rounded-full bg-indigo-500"></span> Accuracy %
                 </span>
-                <span className="flex items-center gap-1 text-slate-400 font-medium">
-                  <span className="h-2 w-2 rounded-full bg-slate-600"></span> Target (75%)
+                <span className="flex items-center gap-1 text-slate-700 dark:text-slate-300 font-semibold">
+                  <span className="h-2 w-2 rounded-full bg-slate-400 dark:bg-slate-600"></span> Target (75%)
                 </span>
               </div>
             </div>
@@ -434,16 +435,17 @@ export default function DashboardPage() {
                       <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="day" stroke="#64748b" textAnchor="middle" fontSize={11} />
-                  <YAxis domain={[50, 100]} stroke="#64748b" fontSize={11} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.25)" />
+                  <XAxis dataKey="day" stroke="#475569" textAnchor="middle" fontSize={11} />
+                  <YAxis domain={[50, 100]} stroke="#475569" fontSize={11} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0b0f19",
-                      borderColor: "#334155",
+                      backgroundColor: "var(--popover)",
+                      borderColor: "var(--border)",
                       borderRadius: "0.75rem",
                       fontSize: "12px",
-                      color: "#fff",
+                      color: "var(--foreground)",
+                      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.15)",
                     }}
                   />
                   <Area
@@ -460,11 +462,11 @@ export default function DashboardPage() {
           </Card>
 
           {/* Solving Pace vs Benchmark (5 Cols) */}
-          <Card className="lg:col-span-5 border border-slate-800 bg-[#0e1422] p-6 space-y-4">
+          <Card className="lg:col-span-5 p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-semibold text-white">Solving Pace (Seconds)</h3>
-                <p className="text-xs text-slate-400">Actual average time vs Target benchmark</p>
+                <h3 className="text-base font-semibold font-heading text-slate-900 dark:text-white">Solving Pace (Seconds)</h3>
+                <p className="text-xs text-slate-700 dark:text-slate-300">Actual average time vs Target benchmark</p>
               </div>
               <Badge variant="secondary" className="text-[10px]">
                 TELEMETRY
@@ -474,19 +476,20 @@ export default function DashboardPage() {
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={speedBenchmarkData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="topic" stroke="#64748b" fontSize={10} />
-                  <YAxis stroke="#64748b" fontSize={11} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.25)" />
+                  <XAxis dataKey="topic" stroke="#475569" fontSize={10} />
+                  <YAxis stroke="#475569" fontSize={11} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0b0f19",
-                      borderColor: "#334155",
+                      backgroundColor: "var(--popover)",
+                      borderColor: "var(--border)",
                       borderRadius: "0.75rem",
                       fontSize: "12px",
-                      color: "#fff",
+                      color: "var(--foreground)",
+                      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.15)",
                     }}
                   />
-                  <Bar dataKey="actualSec" name="Actual Time (s)" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="actualSec" name="Actual Time (s)" fill="#6366f1" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="benchmarkSec" name="Benchmark (s)" fill="#64748b" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>

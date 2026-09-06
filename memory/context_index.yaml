@@ -1,0 +1,175 @@
+schema_version: 1
+last_compacted: null
+context_budget_governor_tokens: 4000
+entries:
+  - topic: workspace_blueprint
+    file: WORKSPACE_BLUEPRINT.md
+    lines: [1, 448]
+    hash: pending_bootstrap
+    summary: "Universal Master Workspace Blueprint v2.0 — multi-agent pipeline architecture, 5 planes (Control, Memory, Data, App, Deployment), 9-persona roster, workflow definitions with memory hooks, operational protocol v2, context budget governor, model tiering, handoff schemas, and closed-loop observability."
+    last_updated: 2026-08-30
+  - topic: master_blueprint
+    file: artifacts/task_lists/Master_Blueprint.md
+    lines: [1, 185]
+    hash: h_aptiverse_v2_bp
+    summary: "AptiVerse Master Blueprint v2.0: Core mission, personas, user stories, NFRs, Next.js 15+ & React 19 & Prisma ORM stack, ERD schema, API contracts, zero-leak timed mock engine."
+    last_updated: 2026-09-06
+  - topic: agent_personas
+    file: .agents/agents.md
+    lines: [1, 91]
+    hash: pending_bootstrap
+    summary: "9 AI personas: @pm, @architect, @uiux, @engineer, @qa, @sec_auditor, @devops, @tech_writer, @memory_keeper — with goals, traits, outputs, and constraints. Includes Operational Protocol v2.0 (Step 0: Memory-First Context Load, Steps 1-4 unchanged, Step 5: Memory Commit)."
+    last_updated: 2026-08-30
+  - topic: startcycle_workflow
+    file: .agents/workflows/startcycle.md
+    lines: [1, 42]
+    hash: pending_bootstrap
+    summary: "Greenfield 4-phase pipeline: Phase 0 Memory Briefing → Phase 1 Ideation & Architecture (2 approval gates, memory commits 1a/2a) → Phase 2 Implementation (UIUX with context packet, memory commit 3a, Engineer with cache check, memory commit 4a) → Phase 3 Parallel QA+Security + CodeRabbit → Phase 4 Delivery + Memory Compaction."
+    last_updated: 2026-08-30
+  - topic: iteratecycle_workflow
+    file: .agents/workflows/iteratecycle.md
+    lines: [1, 47]
+    hash: pending_bootstrap
+    summary: "Surgical iteration pipeline: Phase 0 Indexed Memory Retrieval (skip full blueprint read) → Phase 1 Impact Analysis (Feature_Update_Spec.md to artifacts/task_lists/, 1 approval gate) → Phase 2 Surgical Implementation (cache-aware, memory commit 3a) → Phase 3 Parallel Regression+Security → Phase 4 Blueprint Sync + Memory Commit + Canary Deploy (DevOps emits prod feedback to @memory_keeper)."
+    last_updated: 2026-08-30
+  - topic: skill_write_specs
+    file: .agents/skills/write_specs.md
+    lines: [1, 37]
+    hash: pending_bootstrap
+    summary: "Spec & architecture blueprinting skill: PM BRD (personas, stories, NFRs) → Architect foundation (stack, ERD, API contracts, folder tree) → UI/UX strategy (design system, state) → Approval gate. Output saved to artifacts/task_lists/Master_Blueprint.md."
+    last_updated: 2026-08-30
+  - topic: skill_generate_code
+    file: .agents/skills/generate_code.md
+    lines: [1, 40]
+    hash: pending_bootstrap
+    summary: "Enterprise code generation skill: Data layer (SQL + ORM) → Core domain logic → API/routing layer → Frontend implementation → Dependency manifests. SOLID principles, zero placeholders. Output to database/, services/, frontend/."
+    last_updated: 2026-08-30
+  - topic: skill_audit_code
+    file: .agents/skills/audit_code.md
+    lines: [1, 36]
+    hash: pending_bootstrap
+    summary: "Universal code audit skill: Contract alignment → Static analysis & bug hunting → OWASP security profiling → Proactive remediation + artifacts/audit_report.md → CodeRabbit PR compliance. Targets services/, database/, frontend/, app_build/."
+    last_updated: 2026-08-30
+  - topic: skill_deploy_app
+    file: .agents/skills/deploy_app.md
+    lines: [1, 32]
+    hash: pending_bootstrap
+    summary: "Local/multi-container deployment: Environment & secrets bootstrapping (.env.example) → Multi-stage Dockerfile + docker-compose.yml → Build & schema migration → Launch & health checks → Handoff with URLs. Output to production_artifacts/."
+    last_updated: 2026-08-30
+  - topic: skill_deploy_cloud_run
+    file: .agents/skills/deploy_cloud_run.md
+    lines: [1, 32]
+    hash: pending_bootstrap
+    summary: "Production GCP Cloud Run deployment: API & SA verification (least privilege) → Secret Manager + Cloud SQL proxy → Cloud Build + Artifact Registry push (versioned tags) → gcloud run deploy with traffic splitting → Health check & Cloud Logging verification."
+    last_updated: 2026-08-30
+  - topic: skill_manage_memory
+    file: .agents/skills/manage_memory.md
+    lines: [1, 63]
+    hash: pending_bootstrap
+    summary: "Memory management skill: Pre-phase retrieval (context packet ≤4000 tokens) → Post-phase compaction (session briefs ≤300 tokens, ADRs append-only, index refresh) → Token accounting (ledger + budget violation flagging) → Garbage collection (10-cycle retention, hash re-validation, cache pruning) → Semantic cache for boilerplate (hash-keyed reuse)."
+    last_updated: 2026-08-30
+  - topic: pipeline_guide
+    file: docs/PIPELINE_GUIDE.md
+    lines: [1, 350]
+    hash: pending_bootstrap
+    summary: "Comprehensive developer manual for the Master_Skills pipeline: project initiation (/startcycle), feature extensions (/iteratecycle), RCA bug hunting & diagnosis protocols, human approval gates, memory plane mechanics, directory mapping, and troubleshooting archetypes."
+    last_updated: 2026-08-30
+  - topic: universal_prompts
+    file: docs/UNIVERSAL_PROMPTS.md
+    lines: [1, 260]
+    hash: pending_bootstrap
+    summary: "Ready-to-use prompt library for the pipeline: greenfield kickoffs (/startcycle), feature iterations, bug RCA, UI dark-mode & glassmorphism styling, additive DB migrations, OWASP security hardening, unit/E2E test generation, and Cloud Run deployments."
+    last_updated: 2026-08-30
+  - topic: design_system
+    file: docs/design_system.md
+    lines: [1, 95]
+    hash: h_aptiverse_ds_v2_neu_bento
+    summary: "AptiVerse Triple-Paradigm Design System: Glassmorphic utilities (.glass, .glass-card), Neumorphic shadow models (.neu-raised, .neu-inset, .neu-stat), and Bento grid system (.bento-grid, .bento-hero, .bento-tall)."
+    last_updated: 2026-09-06
+  - topic: component_tree
+    file: docs/component_tree.md
+    lines: [1, 75]
+    hash: h_aptiverse_ct_v2
+    summary: "AptiVerse Next.js Component Hierarchy: AppShell, Topbar, Sidebar, Exam navigation, question viewer, results and analytics views."
+    last_updated: 2026-09-06
+  - topic: audit_report
+    file: artifacts/audit_report.md
+    lines: [1, 80]
+    hash: h_aptiverse_audit_v2
+    summary: "QA and Security Audit Report: Zero TypeScript errors, 37/37 routes compiled, PBKDF2 cryptography, timing attack mitigation, zero-leak validation."
+    last_updated: 2026-09-06
+  - topic: docker_manifest
+    file: Dockerfile
+    lines: [1, 40]
+    hash: h_aptiverse_docker_v2
+    summary: "Multi-stage production Dockerfile: Alpine base, isolated runner with non-root nextjs user, bundled SQLite storage."
+    last_updated: 2026-09-06
+  - topic: ui_design_tokens
+    file: src/app/globals.css
+    lines: [1, 300]
+    hash: h_globals_glass_neu_bento
+    summary: "Global CSS design tokens: .glass, .glass-card, .neu-raised, .neu-inset, .neu-stat, .bento-grid, ambient orb gradients, and micro-interaction keyframes."
+    last_updated: 2026-09-06
+  - topic: ui_primitives
+    file: src/components/ui/card.tsx
+    lines: [1, 120]
+    hash: h_ui_primitives_glass
+    summary: "Upgraded UI primitives (card, button, badge, progress) implementing frosted glass surfaces, glow auras, and tactile pressed states."
+    last_updated: 2026-09-06
+  - topic: session_brief_cycle_002
+    file: memory/session_briefs/cycle-002_ui_overhaul_brief.md
+    lines: [1, 35]
+    hash: h_brief_cycle_002
+    summary: "Cycle 002 session brief: Glassmorphism + Neumorphism + Bento Grid visual upgrade, zero regressions across 37 routes, ADR-004 logged."
+    last_updated: 2026-09-06
+  - topic: theme_system
+    file: src/components/theme/ThemeProvider.tsx
+    lines: [1, 140]
+    hash: h_theme_system_v3
+    summary: "Dual-mode theme provider and animated ThemeToggle button with useSyncExternalStore, localStorage persistence, and anti-FOUC script."
+    last_updated: 2026-09-06
+  - topic: typography_fonts
+    file: src/app/layout.tsx
+    lines: [1, 75]
+    hash: h_fonts_outfit_jakarta
+    summary: "Typography system: Outfit display headings, Plus Jakarta Sans body/UI, and JetBrains Mono timers/math."
+    last_updated: 2026-09-06
+  - topic: session_brief_cycle_003
+    file: memory/session_briefs/cycle-003_theme_and_typography_brief.md
+    lines: [1, 30]
+    hash: h_brief_cycle_003
+    summary: "Cycle 003 session brief: Light/Night mode theme toggle, typography upgrade with Google fonts, zero compilation errors, ADR-005 logged."
+    last_updated: 2026-09-06
+  - topic: admin_glassmorphism
+    file: src/app/admin/page.tsx
+    lines: [1, 276]
+    hash: h_admin_glass_v4
+    summary: "/admin overview page migrated to frosted-glass language: hero banner, 4 stat cards, nested glass bottleneck rows, and translucent recessed progress tracks."
+    last_updated: 2026-09-06
+  - topic: sidebar_accessibility_tokens
+    file: src/components/layout/Sidebar.tsx
+    lines: [1, 433]
+    hash: h_sidebar_wcag_v4
+    summary: "Sidebar navigation component with guaranteed WCAG 2.1 AA contrast tokens (--sidebar-text-primary, --sidebar-text-secondary, --sidebar-icon, --sidebar-section-label) in both themes."
+    last_updated: 2026-09-06
+  - topic: session_brief_cycle_004
+    file: memory/session_briefs/cycle-004_admin_glassmorphism_brief.md
+    lines: [1, 45]
+    hash: h_brief_cycle_004
+    summary: "Cycle 004 session brief: /admin glassmorphism visual language and light-mode contrast bugfix, zero regressions across 37 routes, ADR-006 logged."
+    last_updated: 2026-09-06
+  - topic: ambient_canvas_tokens
+    file: src/app/globals.css
+    lines: [1, 350]
+    hash: h_globals_canvas_contrast_v5
+    summary: "Ambient canvas mesh gradient tokens (--bg-canvas), upgraded muted foreground tokens, and universal WCAG AA contrast safeguards for text-slate-400/500 in both themes."
+    last_updated: 2026-09-06
+  - topic: session_brief_cycle_005
+    file: memory/session_briefs/cycle-005_font_contrast_and_gradients_brief.md
+    lines: [1, 48]
+    hash: h_brief_cycle_005
+    summary: "Cycle 005 session brief: Universal font contrast uplift across all components and dynamic ambient canvas mesh gradients, ADR-007 logged."
+    last_updated: 2026-09-06
+
+
+

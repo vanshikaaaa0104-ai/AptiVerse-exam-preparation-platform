@@ -50,7 +50,7 @@ export function MobileNav() {
   ];
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0b0f19]/95 backdrop-blur-lg border-t border-slate-800/80 px-2 py-1 safe-bottom">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/85 dark:bg-[#0b0f19]/90 backdrop-blur-xl border-t border-slate-200/80 dark:border-white/[0.08] px-2 py-1 safe-bottom shadow-lg">
       <div className="flex items-center justify-around">
         {tabs.map((tab) => {
           const isActive =
@@ -64,8 +64,8 @@ export function MobileNav() {
               className={cn(
                 "flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all duration-150 relative min-w-[50px]",
                 isActive
-                  ? "text-indigo-400 font-semibold"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "text-indigo-600 dark:text-indigo-400 font-semibold"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               )}
             >
               {isActive && (
@@ -74,7 +74,7 @@ export function MobileNav() {
               <tab.icon
                 className={cn(
                   "h-5 w-5 transition-transform",
-                  isActive && "scale-110 text-indigo-400"
+                  isActive ? "scale-110 text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400"
                 )}
               />
               <span className="text-[10px] tracking-tight mt-1">{tab.label}</span>

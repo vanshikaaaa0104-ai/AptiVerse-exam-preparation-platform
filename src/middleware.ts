@@ -76,7 +76,8 @@ export async function middleware(request: NextRequest) {
         // Fallback to default redirect
       }
     }
-    const defaultDestination = session?.role === "ADMIN" ? "/admin" : "/dashboard";
+    const isAdmin = session?.role === "ADMIN" || session?.role === "SUPERADMIN";
+    const defaultDestination = isAdmin ? "/admin" : "/dashboard";
     return NextResponse.redirect(new URL(defaultDestination, request.url));
   }
 

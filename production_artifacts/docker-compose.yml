@@ -1,0 +1,25 @@
+services:
+  aptiverse-web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: aptiverse-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - AUTH_SECRET=production_secret_key_change_me_to_random_32_bytes
+      - DATABASE_URL=file:/app/dev.db
+    volumes:
+      - aptiverse-data:/app/prisma
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/auth/session || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  aptiverse-data:

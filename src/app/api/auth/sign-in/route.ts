@@ -5,6 +5,7 @@ import {
   SESSION_COOKIE_NAME,
   ALT_SESSION_COOKIE_NAME,
 } from "@/lib/session";
+import { verifyPassword } from "@/lib/password";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,17 +26,28 @@ export async function POST(req: NextRequest) {
     let targetName = "Student Aspirant";
     let targetRole: "STUDENT" | "ADMIN" = "STUDENT";
     let targetExam = "cat";
+    let dbUser = null;
 
     if (isDemoAdmin) {
       targetEmail = "admin@aptiverse.ai";
       targetName = "Dr. Rajesh Iyer (SME Lead)";
       targetRole = "ADMIN";
       targetExam = "cat";
+
+      dbUser = await db.user.findUnique({
+        where: { email: targetEmail },
+        include: { profile: true },
+      });
     } else if (isDemoStudent) {
       targetEmail = "aman.sharma@aptiverse.ai";
       targetName = "Aman Sharma";
       targetRole = "STUDENT";
       targetExam = "cat";
+
+      dbUser = await db.user.findUnique({
+        where: { email: targetEmail },
+        include: { profile: true },
+      });
     } else {
       if (!password) {
         return NextResponse.json(
@@ -43,50 +55,41 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
-      targetName = email
-        .split("@")[0]
-        .replace(/[._-]/g, " ")
-        .replace(/\b\w/g, (c: string) => c.toUpperCase());
-    }
 
-    // Attempt to find or create in database
-    let dbUser = null;
-    try {
       dbUser = await db.user.findUnique({
         where: { email: targetEmail },
         include: { profile: true },
       });
 
       if (!dbUser) {
-        dbUser = await db.user.create({
-          data: {
-            email: targetEmail,
-            name: targetName,
-            role: targetRole,
-            profile: {
-              create: {
-                targetExamSlug: targetExam,
-                targetYear: 2026,
-              },
-            },
-          },
-          include: { profile: true },
-        });
+        return NextResponse.json(
+          { success: false, error: "Invalid email or password." },
+          { status: 401 }
+        );
       }
-    } catch (dbErr) {
-      console.warn("DB user sync skipped:", dbErr);
+
+      if (dbUser.passwordHash) {
+        const isPasswordValid = verifyPassword(password, dbUser.passwordHash);
+        if (!isPasswordValid) {
+          return NextResponse.json(
+            { success: false, error: "Invalid email or password." },
+            { status: 401 }
+          );
+        }
+      }
     }
 
     const userId = dbUser?.id || (isDemoAdmin ? "admin-001" : isDemoStudent ? "student-001" : `user-${Date.now()}`);
     const finalRole = (dbUser?.role as "STUDENT" | "ADMIN") || targetRole;
     const finalName = dbUser?.name || targetName;
+    const finalExam = dbUser?.profile?.targetExamSlug || targetExam;
 
     const token = await createSessionToken({
       userId,
       email: targetEmail,
       name: finalName,
       role: finalRole,
-      targetExam,
+      targetExam: finalExam,
     });
 
     const response = NextResponse.json({
@@ -96,14 +99,14 @@ export async function POST(req: NextRequest) {
         email: targetEmail,
         name: finalName,
         role: finalRole,
-        targetExam,
+        targetExam: finalExam,
       },
     });
 
     // Set cookie on response for Next.js middleware and SSR
     const cookieOptions = {
       path: "/",
-      httpOnly: false, // Accessible by client and server
+      httpOnly: true,
       sameSite: "lax" as const,
       maxAge: 30 * 24 * 60 * 60, // 30 days
       secure: process.env.NODE_ENV === "production",

@@ -5,6 +5,7 @@ import {
   SESSION_COOKIE_NAME,
   ALT_SESSION_COOKIE_NAME,
 } from "@/lib/session";
+import { hashPassword } from "@/lib/password";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,48 +27,44 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (!password) {
+    if (!password || password.length < 6) {
       return NextResponse.json(
-        { success: false, error: "Password is required." },
+        { success: false, error: "Password must be at least 6 characters long." },
         { status: 400 }
       );
     }
 
-    let dbUser = null;
-    try {
-      dbUser = await db.user.findUnique({
-        where: { email },
-        include: { profile: true },
-      });
+    // Check if user already exists
+    const existingUser = await db.user.findUnique({
+      where: { email },
+    });
 
-      if (!dbUser) {
-        dbUser = await db.user.create({
-          data: {
-            email,
-            name,
-            role: "STUDENT",
-            profile: {
-              create: {
-                targetExamSlug: targetExam,
-                targetYear: 2026,
-              },
-            },
-          },
-          include: { profile: true },
-        });
-      } else {
-        // Update name and profile if exists
-        dbUser = await db.user.update({
-          where: { id: dbUser.id },
-          data: { name },
-          include: { profile: true },
-        });
-      }
-    } catch (dbErr) {
-      console.warn("DB user sync skipped:", dbErr);
+    if (existingUser) {
+      return NextResponse.json(
+        { success: false, error: "An account with this email address already exists. Please sign in." },
+        { status: 409 }
+      );
     }
 
-    const userId = dbUser?.id || `user-${Date.now()}`;
+    const passwordHash = hashPassword(password);
+
+    const dbUser = await db.user.create({
+      data: {
+        email,
+        name,
+        passwordHash,
+        role: "STUDENT",
+        profile: {
+          create: {
+            targetExamSlug: targetExam,
+            targetYear: 2026,
+          },
+        },
+      },
+      include: { profile: true },
+    });
+
+    const userId = dbUser.id;
     const token = await createSessionToken({
       userId,
       email,
@@ -89,7 +86,7 @@ export async function POST(req: NextRequest) {
 
     const cookieOptions = {
       path: "/",
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "lax" as const,
       maxAge: 30 * 24 * 60 * 60, // 30 days
       secure: process.env.NODE_ENV === "production",
